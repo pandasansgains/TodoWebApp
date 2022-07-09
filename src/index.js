@@ -16,31 +16,13 @@ const connection = mysql.createConnection({ // create connection
 
 })
 
-
 connection.connect(function(err){
-
     if (err) throw err;
-
-
 })
+
 
 app.use(express.json());
 
-
-// connection.connect(function(err){
-
-//     if (err) throw err;
-
-//     console.log("connected");
-
-//     connection.query("SELECT * FROM webstore.product" , function(err,res){
-
-//         if(err) throw err;
-
-//         console.log("result : " + JSON.stringify(res) ); // we can now retrieve from DB
-//     })
-
-// })
 
 app.listen(
 
@@ -48,6 +30,12 @@ app.listen(
     () => console.log(`it's alive on  http://localhost:${PORT}`)
 
 )
+
+
+app.get('/',function(req,res) { // to open the main file 
+
+    res.sendFile( __dirname + '/index.html'); // adding the 
+});
 
 
 app.get('/product/:id' , (req, res) => {// response we send as get
