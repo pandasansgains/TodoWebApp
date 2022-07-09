@@ -3,15 +3,12 @@ const express = require('express');
 const mysql = require('mysql'); // mysql library
 const path = require('path')
 const config = require('config');
+const http = require('http');
 
 const app = express();
 const PORT = 8080;
-//ffffff
 
-const num = 1;
-
-
-const connection = mysql.createConnection({
+const connection = mysql.createConnection({ // create connection
 
     host:  `${config.HOST}`,
     user: `${config.USER}`,
@@ -19,23 +16,31 @@ const connection = mysql.createConnection({
 
 })
 
-app.use(express.json());
-
 
 connection.connect(function(err){
+
     if (err) throw err;
 
-    console.log("connected");
-
-    connection.query("SELECT * FROM webstore.product" , function(err,res){
-
-        if(err) throw err;
-
-        console.log("result : " + JSON.stringify(res) ); // we can now retrieve from DB
-    })
 
 })
 
+app.use(express.json());
+
+
+// connection.connect(function(err){
+
+//     if (err) throw err;
+
+//     console.log("connected");
+
+//     connection.query("SELECT * FROM webstore.product" , function(err,res){
+
+//         if(err) throw err;
+
+//         console.log("result : " + JSON.stringify(res) ); // we can now retrieve from DB
+//     })
+
+// })
 
 app.listen(
 
@@ -45,15 +50,20 @@ app.listen(
 )
 
 
-app.get('/tshirt' , (req, res) => {
+app.get('/product/:id' , (req, res) => {// response we send as get
+    const { id } = req.params;
+        // connection.escape is the prepared statement
+        connection.query("SELECT * from webstore.product p WHERE p.productid ="+ connection.escape(id) , function(err,response){// response from DB
+    
+            if(err) throw err;
 
-    res.status(200).send({
-
-        tshirt: 'Shirt',
-        size: 'L'
-
-    })
+            res.setHeader('Content-Type', 'application/json');
+            res.write(JSON.stringify(response));
+            res.send();
+            
+        })
 });    
+
 
 
 app.post('/tshirt/:id', (req,res) => {
@@ -66,6 +76,5 @@ app.post('/tshirt/:id', (req,res) => {
     res.send({
         tshirt: `tshirt with your ${logo} and ID of ${id} `,
     })
-
 
 })
