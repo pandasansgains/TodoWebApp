@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+    <script src="../JS/todomain.js" type = "text/javascript" defer></script> 
+        
+    <link rel='stylesheet' type ="text/css" href='../css/todomainStyle.css'>
+
+
+    <header>      
+        <p id = "Title">
+            TODO LIST 
+        </p>
+
+
+        
+        <table id="DateTime">
+            <tr class="tableRow">
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            <tr class="tableRow">
+                <td id = "Date"></td>
+                <td id = "Time"></td>
+            </tr>
+        </table>
+
+        
+    </header>
+
+<body>
+
+    <div class = "wrapper">
+
+        <input type="text" id= "contentHolder" placeholder = "Enter Task" onkeyup="processInput(event)" ><br>
+
+
+        <ul id = "taskPlaceHolder" class ="taskContainer">
+                 
+            <li class = 'draggable' draggable="true" ><span class = 'content'>Item2</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
+            <li class = 'draggable' draggable="true" ><span class = 'content'>Item3</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
+            <li class = 'draggable' draggable="true" ><span class = 'content'>Item4</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
+    
+        </ul>
+    </div>
+
+
+    <div>
+
+        <ul id = "doneTaskPlaceHolder" class ="taskContainer">
+             
+            <p id = "doneTaskTitle"> Done </p>    
+            <li class = 'draggable' draggable="true"  ><span  class ="done">Item1</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
+    
+        </ul>
+
+
+    </div>    
+
+
+    
+
+
+</body>
+
+
+</html>
+

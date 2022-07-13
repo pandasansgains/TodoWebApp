@@ -2,7 +2,7 @@
 const express = require('express');
 const mysql = require('mysql'); // mysql library
 const path = require('path')
-const config = require('config');
+const config = require('config');// reference to config file
 const http = require('http');
 
 const app = express();
@@ -20,9 +20,9 @@ connection.connect(function(err){
     if (err) throw err;
 })
 
+app.use(express.static('src'));// reference all static files
 
 app.use(express.json());
-
 
 app.listen(
 
@@ -31,12 +31,10 @@ app.listen(
 
 )
 
-
 app.get('/',function(req,res) { // to open the main file 
 
-    res.sendFile( __dirname + '/index.html'); // adding the 
+    res.sendFile( __dirname + '/src/html/todomain.html'); // adding the 
 });
-
 
 app.get('/product/:id' , (req, res) => {// response we send as get
     const { id } = req.params;
@@ -51,8 +49,6 @@ app.get('/product/:id' , (req, res) => {// response we send as get
             
         })
 });    
-
-
 
 app.post('/tshirt/:id', (req,res) => {
     const { id } = req.params;
