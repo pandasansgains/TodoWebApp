@@ -16,9 +16,8 @@ const connection = mysql.createConnection({ // create connection
 
 })
 
-connection.connect(function(err){
-    if (err) throw err;
-})
+
+
 
 app.use(express.static('src'));// reference all static files
 
@@ -34,6 +33,13 @@ app.listen(
 app.get('/',function(req,res) { // to open the main file 
 
     res.sendFile( __dirname + '/src/html/todomain.html'); // adding the 
+
+
+    // uncomment when we will do requests
+    // connection.connect(function(err){
+    //     if (err) throw err;
+    // })
+
 });
 
 app.get('/product/:id' , (req, res) => {// response we send as get

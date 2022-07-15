@@ -9,10 +9,11 @@
     <header>      
         <p id = "Title">
             TODO LIST 
-        </p>
 
+            <button type="button" onclick ="createContainer('category')"  >Click Me!</button>
 
-        
+        </p> 
+
         <table id="DateTime">
             <tr class="tableRow">
                 <th>Date</th>
@@ -24,39 +25,34 @@
             </tr>
         </table>
 
-        
     </header>
+
+
 
 <body>
 
-    <div class = "wrapper">
+    <div id = "TaskListWrapper">
 
-        <input type="text" id= "contentHolder" placeholder = "Enter Task" onkeyup="processInput(event)" ><br>
+       
 
 
-        <ul id = "taskPlaceHolder" class ="taskContainer">
-                 
-            <li class = 'draggable' draggable="true" ><span class = 'content'>Item2</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
-            <li class = 'draggable' draggable="true" ><span class = 'content'>Item3</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
-            <li class = 'draggable' draggable="true" ><span class = 'content'>Item4</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
-    
-        </ul>
+
+
+
     </div>
 
 
+<!--
     <div>
 
         <ul id = "doneTaskPlaceHolder" class ="taskContainer">
-             
             <p id = "doneTaskTitle"> Done </p>    
             <li class = 'draggable' draggable="true"  ><span  class ="done">Item1</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button> </li>
-    
         </ul>
-
 
     </div>    
 
-
+-->
     
 
 
