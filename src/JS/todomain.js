@@ -1,92 +1,18 @@
 /*eslint-env es6*/
 
-//TODO when text to long list element should still contain the text
-//TODO style Done taskList
-
-//TODO add button to put it into done for 
-//TODO add day and time on top
-//TODO add a timer we can launch and attach a task
-//TODO make delimited placeholder for the containers
-//TODO style input box
-//TODO add time button that adds a time to a task -> If time is added we will have a timeline and then the time of the task will appear on the timeline
-// cannot understand why they don't get duplicated as can';t find function that removes from container when finished 
 
 
+//TODO call createContainer on buttonPress
 
 
+function initContainer(container){
 
-function initDraggables(){
-    
-    var draggables =  document.querySelectorAll(".draggable");
-    
-   // var containers = document.querySelectorAll(".container");
-
-    
-    draggables.forEach(draggable => {
-    
-    draggable.addEventListener('dragstart', () => { // triggered when we start to drag a list tag
-        
-        draggable.classList.add('dragging')
-        
-        //console.log("dragging");
-    })
-    
-    
-    
-    draggable.addEventListener('dragend', () => { // triggered when we stop dragging
-        
-        draggable.classList.remove('dragging')
-        
-    })
-    
-})
-}
-
-function initContainers(){
-    
-    
-    //var container = document.getElementById("taskPlaceHolder");
-    
-    //var containers = document.getElementsByClassName("taskContainer");
-    
-    var containers = document.querySelectorAll(".taskContainer,.grid-item");
-    
-    // init grid items as container
-    
-    
-    
-    
-    Array.from(containers).forEach(container => {
-         container.addEventListener('dragover', e =>{
-             
-             
+    container.addEventListener('dragover', e =>{
         const afterElement = getDragAfterElement(container, e.clientY); // passing container and mouse 
              
         const draggable = document.querySelector('.dragging');
         e.preventDefault();
-             
-        if(container.id == "doneTaskPlaceHolder"){
-                
-                draggable.classList.remove("content");
-                draggable.classList.add("done");
-        }
-             
-             
-        if(container.id == "taskPlaceHolder"){
-                
-                draggable.classList.remove("done");
-                draggable.classList.add("content");
-                
-        }    
-             
-////             
-//        if(container.classList.contains("grid-item")){
-//                
-//               container.classList.add("color-grid-item");
-//               container.classList.remove("grid-item");
-//               
-//                
-//        }        
+      
              
         if(afterElement == null){
             
@@ -97,12 +23,74 @@ function initContainers(){
         
             container.insertBefore(draggable,afterElement);
         }
-         })
+    })
+
+}
+
+function initDraggable(element){
+
     
-         
+    element.addEventListener('dragstart', () => { // triggered when we start to drag a list tag
+        
+        element.classList.add('dragging')
+    
+    })
+    
+    element.addEventListener('dragend', () => { // triggered when we stop dragging
+        
+        element.classList.remove('dragging')
         
     })
-                       
+
+}
+
+function createContainer(categoryName){
+
+    //create a taskPlaceHolder
+
+    var div = document.createElement("div");
+    div.classList.add("grid-item");// TODO style the grid-tiem
+
+    var ul = document.createElement("ul");
+    ul.classList.add(categoryName);
+    ul.classList.add("taskPlaceHolder");
+    initContainer(ul);// set the dragover listeners
+
+    var input = document.createElement("INPUT");
+    input.setAttribute("type","text");
+    input.classList.add(categoryName);
+    input.setAttribute("placeholder","Enter Task");
+
+    input.onkeyup = function(event){
+
+        let text = this.value;
+
+        if(event.key == "Enter"){
+        
+            if( text != ""){
+
+                var listElem = document.createElement('li');
+                listElem.classList.add('draggable');
+                listElem.setAttribute('draggable',true);
+                initDraggable(listElem); // set the dragging classnames when dragged
+
+                // TODO create this dynamically
+                listElem.innerHTML ="<span class = 'content'>" + text + "</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
+                
+                this.nextElementSibling.appendChild(listElem);
+                input.value = "";// reset to placeholder 
+            }
+        } 
+
+    }
+
+
+    div.appendChild(input);
+    div.appendChild(ul);
+    var wrapper = document.getElementById("TaskListWrapper");
+    wrapper.appendChild(div);
+
+
 }
 
 function getDragAfterElement(container, y){
@@ -135,8 +123,9 @@ function getDragAfterElement(container, y){
     
 }
 
-function setTimeForm(listElem) {
-    
+
+
+function setTimeForm(listElem) { // timeForm for task elements
     
     var div = document.createElement("div");
     div.classList.add("popup");
@@ -144,19 +133,20 @@ function setTimeForm(listElem) {
     
     document.getElementById("popupForm").style.display = "block";
 }
+
      
 function closeTheForm() {
     
   document.getElementById("popupForm").style.display = "none";
     
 }
+
     
-function setBackground(id, color){
+function setBackground(id, color){// sets background of given id element to color
     
     document.getElementById(id).style.backgroundColor = color;
     
 }
-
 // deletes this.parent 
 function deleteElem(elem){
     
@@ -165,6 +155,7 @@ function deleteElem(elem){
     initDraggables();
 
 }
+
 
 function processInput(event){
     
@@ -191,6 +182,7 @@ function processInput(event){
     } 
 }
 
+
 function displayClock(){
     var refresh=1000; // Refresh rate in milli seconds
     var mytime=setTimeout('displayClockTime()',refresh)
@@ -206,9 +198,11 @@ function displayClockTime(){
     
 }
 
+function generateTaskHolder(){
 
-initContainers();
-initDraggables();
+}
+
+
 displayClockTime();
 
 
