@@ -56,9 +56,19 @@ function createContainer(categoryName){
     ul.classList.add("taskPlaceHolder");
     initContainer(ul);// set the dragover listeners
 
+    // create a span
+
+    var span = document.createElement("SPAN");
+    span.classList.add("categoryTitle")
+    var text = document.createTextNode(categoryName);
+    span.appendChild(text);
+
+    ul.appendChild(span);
+
     var input = document.createElement("INPUT");
     input.setAttribute("type","text");
-    input.classList.add(categoryName);
+    input.classList.add("taskInputField");// TODO check why undefined
+    input.classList.add(categoryName);// TODO check why undefined
     input.setAttribute("placeholder","Enter Task");
 
     input.onkeyup = function(event){
@@ -73,10 +83,8 @@ function createContainer(categoryName){
                 listElem.classList.add('draggable');
                 listElem.setAttribute('draggable',true);
                 initDraggable(listElem); // set the dragging classnames when dragged
-
                 // TODO create this dynamically
                 listElem.innerHTML ="<span class = 'content'>" + text + "</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
-                
                 this.nextElementSibling.appendChild(listElem);
                 input.value = "";// reset to placeholder 
             }
@@ -91,6 +99,24 @@ function createContainer(categoryName){
     wrapper.appendChild(div);
 
 
+}
+
+//called in the input field at the top
+function createCategory(event){
+
+    let input = document.getElementById("catInputField");
+    let text = input.value;
+
+    event.preventDefault;
+
+        if(event.key == "Enter"){
+        
+            if( text != ""){
+                
+                createContainer(text);
+                input.value = "";
+            }
+        } 
 }
 
 function getDragAfterElement(container, y){
@@ -152,7 +178,6 @@ function deleteElem(elem){
     
     var element = elem;
     element.parentNode.parentNode.removeChild(element.parentNode);
-    initDraggables();
 
 }
 

@@ -9,17 +9,42 @@
 
     display: grid;
     grid-template-columns: repeat(5, 1fr) ;
-    grid-template-rows: auto;
+    grid-template-rows: 1;
     grid-gap: 20px;
 
   }
-  
-  
+
+  #catInputField{
+
+    border:none;
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    border-radius: 20px;
+    text-overflow: ellipsis;
+    display: block;
+    margin: auto;
+    
+  }
+
+  .taskInputField{
+    width: 100%;
+    border:none;
+    height: 20px;
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    border-radius: 20px;
+    text-overflow: ellipsis;
+    display: block;
+    margin: auto;
+  }
   
   body{
       background-color: indianred;
   }
-  
   
   #Title{
       width: 100%;
@@ -31,59 +56,35 @@
   }
   
   
-  
-  div.wrapper {
-              width: 350px;
-              height:10x;
-              margin: auto;
-          }
-  
-  
-  input[type="text"] {
-              width: 300px;
-              height: 50px;
-              display: block;
-              margin : 0 auto;
-          }
-  
 
   
   ul li {
+      width: auto;
       background: rgba(255,255,255,.1);
       padding: 10px 20px;
       margin: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
   }
 
+  .grid-item{
 
+    display: block;
+
+  }
+  
   .taskPlaceHolder{
-      
-    position: absolute;
-    width : 300px;
-    height : 300px;
-    box-sizing: border-box;
-    background-color: #2196F3;
-    
-}
 
-
-  
-  
-  #taskPlaceHolder{
-      
-      position: absolute;
-      width : 300px;
-      height : 500px;
+      width : 100%;
+      min-height: 300px;
+      height : auto;
       box-sizing: border-box;
       background-color: #2196F3;
+      padding:0px;
+      border-radius: 10px;
       
   }
-  
-  #doneTaskPlaceHolder{
-      
-      width : 300px;
-      height : 700px;
-  
-  }
+
   
   #DateTime{
       
@@ -105,32 +106,36 @@
       font-family: "Anton";
       
   }
-  
-  
-  
-  
+
+  .categoryTitle{
+
+    background-color: rgb(203, 145, 18);
+    width: 100%;
+    height: 30px;
+    display: block;
+    text-align: center;
+    font-family: "Anton";
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+  }
   
   .done{
-      
       font-family: "Anton";
       text-decoration: line-through;
-  
   }
-  
-  
   
   .delete{
-      
      float: right;
-      
-  }
+    }
   
   .addTime{
       
      float: right;
       
   }
-  
   
   .content{
       
@@ -139,9 +144,8 @@
   }
   
   .draggable{
-      
-      
-      cursor: move;
+
+      cursor: grab;
   }
   
   .draggable.dragging{
