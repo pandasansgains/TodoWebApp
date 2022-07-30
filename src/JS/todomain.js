@@ -1,10 +1,6 @@
 /*eslint-env es6*/
 
 
-
-//TODO call createContainer on buttonPress
-
-
 function initContainer(container){
 
     container.addEventListener('dragover', e =>{
@@ -60,6 +56,7 @@ function createContainer(categoryName){
 
     var span = document.createElement("SPAN");
     span.classList.add("categoryTitle")
+    //TODO concatenate 
     var text = document.createTextNode(categoryName);
     span.appendChild(text);
 
@@ -67,6 +64,7 @@ function createContainer(categoryName){
 
     var input = document.createElement("INPUT");
     input.setAttribute("type","text");
+    //input.setAttribute("maxlength","42");
     input.classList.add("taskInputField");// TODO check why undefined
     input.classList.add(categoryName);// TODO check why undefined
     input.setAttribute("placeholder","Enter Task");
@@ -81,10 +79,11 @@ function createContainer(categoryName){
 
                 var listElem = document.createElement('li');
                 listElem.classList.add('draggable');
+                listElem.classList.add('task');
                 listElem.setAttribute('draggable',true);
                 initDraggable(listElem); // set the dragging classnames when dragged
                 // TODO create this dynamically
-                listElem.innerHTML ="<span class = 'content'>" + text + "</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
+                listElem.innerHTML ="<span class = 'content'>" + text + "</span>";//  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
                 this.nextElementSibling.appendChild(listElem);
                 input.value = "";// reset to placeholder 
             }
@@ -221,6 +220,10 @@ function displayClockTime(){
     document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() +"m " +x.getSeconds() +"s";
     displayClock();
     
+}
+
+function colorElem(elem, color){
+    elem.style.backgroundColor = color;
 }
 
 function generateTaskHolder(){
