@@ -30,17 +30,17 @@ app.listen(
 
 )
 
+// base page
 app.get('/',function(req,res) { // to open the main file 
-
     res.sendFile( __dirname + '/src/html/todomain.html'); // adding the 
-
-
-    // uncomment when we will do requests
-    // connection.connect(function(err){
-    //     if (err) throw err;
-    // })
-
 });
+
+// login page
+app.get('/login',function(req,res) { // to open the main file 
+    res.sendFile( __dirname + '/src/html/login.html'); // adding the 
+});
+
+
 
 app.get('/product/:id' , (req, res) => {// response we send as get
     const { id } = req.params;
