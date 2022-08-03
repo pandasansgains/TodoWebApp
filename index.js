@@ -17,8 +17,6 @@ const connection = mysql.createConnection({ // create connection
 })
 
 
-
-
 app.use(express.static('src'));// reference all static files
 
 app.use(express.json());
