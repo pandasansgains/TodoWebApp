@@ -29,9 +29,9 @@
 
         <div class = "navbar">
             <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Load Planning </a>
-            <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Save Planning </a>
+            <a onclick = "saveDashboard()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Save Planning </a>
             <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Export Planning </a>
-            <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Login </a>
+            <a href="/login" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Login </a>
             <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >About </a>
 
             <a><input id = "catInputField" maxlength = "42" type="text" class="category navbarButton" placeholder="Add Category" onkeyup="createCategory(event)"></a>
@@ -48,9 +48,18 @@
        
 
 
+    </div>
 
+    <div id="popupTask">
 
+        <form id = "popupForm">
 
+            <label for="taskName"> taskname: </label>
+            <p name = "taskName" class = "form"></p>
+
+        </form>
+
+        <textarea type="text" id="popupNote"  > </textarea>
     </div>
 
     

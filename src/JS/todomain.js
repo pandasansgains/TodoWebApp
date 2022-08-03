@@ -1,5 +1,12 @@
 /*eslint-env es6*/
 
+// TODO
+
+// Start with the login page 
+// Make a dummy data. fill it in the database and make the load buttton to load a planning
+// Make a save planning function ( should e able to specify for a date)
+// Make login form and database for it 
+// Make export planning
 
 function initContainer(container){
 
@@ -45,10 +52,9 @@ function createContainer(categoryName){
     //create a taskPlaceHolder
 
     var div = document.createElement("div");
-    div.classList.add("grid-item");// TODO style the grid-tiem
+    div.classList.add("grid-item");
 
     var ul = document.createElement("ul");
-    ul.classList.add(categoryName);
     ul.classList.add("taskPlaceHolder");
     initContainer(ul);// set the dragover listeners
 
@@ -56,17 +62,29 @@ function createContainer(categoryName){
 
     var span = document.createElement("SPAN");
     span.classList.add("categoryTitle")
-    //TODO concatenate 
     var text = document.createTextNode(categoryName);
     span.appendChild(text);
 
+    var button = document.createElement('span');// adding closeButton
+    button.classList.add('closeButtonCategory');
+    button.innerHTML= "&times;"
+    button.onclick =function(){
+
+        deleteCategory(this);
+    }
+
+    span.appendChild(button);
     ul.appendChild(span);
+   
+    
 
     var input = document.createElement("INPUT");
     input.setAttribute("type","text");
-    //input.setAttribute("maxlength","42");
-    input.classList.add("taskInputField");// TODO check why undefined
-    input.classList.add(categoryName);// TODO check why undefined
+
+    //input.setAttribute('maxlength',42);
+
+
+    input.classList.add("taskInputField");
     input.setAttribute("placeholder","Enter Task");
 
     input.onkeyup = function(event){
@@ -82,8 +100,30 @@ function createContainer(categoryName){
                 listElem.classList.add('task');
                 listElem.setAttribute('draggable',true);
                 initDraggable(listElem); // set the dragging classnames when dragged
-                // TODO create this dynamically
-                listElem.innerHTML ="<span class = 'content'>" + text + "</span>";//  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
+                listElem.ondblclick = function(){
+                    showForm(listElem);
+                }
+
+
+                var button = document.createElement('span');
+                button.classList.add('closeButton');
+                button.innerHTML= "&times;"
+                button.onclick =function(){
+
+                    deleteElem(this);
+                }
+                
+
+
+                var span = document.createElement('span');
+                span.classList.add('content');
+                span.innerHTML = text;
+             
+
+                listElem.appendChild(span);
+                listElem.appendChild(button);
+
+                // we are in the grid-item next element sibling is UL taskplaceholder
                 this.nextElementSibling.appendChild(listElem);
                 input.value = "";// reset to placeholder 
             }
@@ -99,7 +139,6 @@ function createContainer(categoryName){
 
 
 }
-
 //called in the input field at the top
 function createCategory(event){
 
@@ -117,6 +156,81 @@ function createCategory(event){
             }
         } 
 }
+
+// generates a JSON object based on a dashboard
+function saveDashboard(){
+
+    let output = {};
+    output.categories = [];
+
+    let taskHolders = document.getElementsByClassName("taskPlaceHolder");
+
+    for(let i = 0 ; i < taskHolders.length; i++){
+
+        output.categories.push(saveTasks(taskHolders[i]));
+        
+    }
+
+    console.log(JSON.stringify(output));
+    
+}
+
+
+//TODO finish
+function saveTasks(taskPlaceHolder){
+
+    let jsonTasks = {};
+
+    jsonTasks.tasks = [];
+
+    let tasks = taskPlaceHolder.children;
+
+    for(let i = 0; i < tasks.length; i++){
+
+        if(tasks[i].classList.contains("categoryTitle")){
+
+            //console.log(tasks[i].textContent);
+
+            jsonTasks.categoryName = tasks[i].textContent; // should be the content of the span within
+
+
+        }
+
+
+
+        if(tasks[i].classList.contains("task")){
+
+            let jsonTask = {};
+
+            console.log(tasks[i]);
+            console.log(tasks[i].children);
+
+            let content = tasks[i].children;
+            
+
+            for(let j = 0 ; j < content.length; j++){
+
+                console.log(content[j].classList);
+
+                if(content[j].classList.contains("content")){
+
+                    jsonTask.taskDescription = content[j].textContent;
+                    jsonTasks.tasks.push(jsonTask);
+        
+
+                }
+
+            }
+        }
+    }
+
+    console.log(JSON.stringify(jsonTasks));
+    return jsonTasks;
+}
+
+
+
+
 
 function getDragAfterElement(container, y){
     
@@ -147,36 +261,20 @@ function getDragAfterElement(container, y){
     
     
 }
+    
 
-
-
-function setTimeForm(listElem) { // timeForm for task elements
-    
-    var div = document.createElement("div");
-    div.classList.add("popup");
-    document.getElementsByClassName("body").appendChild(div);
-    
-    document.getElementById("popupForm").style.display = "block";
-}
-
-     
-function closeTheForm() {
-    
-  document.getElementById("popupForm").style.display = "none";
-    
-}
-
-    
-function setBackground(id, color){// sets background of given id element to color
-    
-    document.getElementById(id).style.backgroundColor = color;
-    
-}
 // deletes this.parent 
 function deleteElem(elem){
     
     var element = elem;
     element.parentNode.parentNode.removeChild(element.parentNode);
+
+}
+
+function deleteCategory(elem){
+
+    var element = elem;
+    element.parentNode.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode.parentNode);
 
 }
 
@@ -226,9 +324,29 @@ function colorElem(elem, color){
     elem.style.backgroundColor = color;
 }
 
-function generateTaskHolder(){
 
+function showForm(listelem) { // timeForm for task elements
+
+    var div = document.getElementById("popupTask");
+    var form = document.getElementById("popupForm");
+    var textArea = document.getElementById("popupNote");
+
+    div.style.display = "block";
+    form.style.display = "block";
+    textArea.style.display = "block";
+  
 }
+  
+function closeTheForm() {
+    
+  document.getElementById("popupForm").style.display = "none";
+    
+}
+
+
+
+
+
 
 
 displayClockTime();

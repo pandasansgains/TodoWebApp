@@ -5,7 +5,6 @@
   }
 
 
-
 #Title{
     width: 100%;
     height: 100px;
@@ -71,8 +70,9 @@
 
     display: grid;
     grid-template-columns: repeat(4, 1fr) ;
-    grid-template-rows: 1;
     grid-gap: 20px;
+    margin-top: 15px;
+    
 
   }
 
@@ -111,43 +111,38 @@
   }
   
   .task {
-      width: auto;
-      background: rgba(231, 148, 23, 0.5);
-      padding: 10px 20px;
-      margin: 5px;
-      display: block;
-      max-width: 300px;
-      word-wrap: break-word;
+
+    width: auto;
+    background: rgba(231, 148, 23, 0.5);
+    padding: 10px 20px;
+    margin: 5px;
+    display: block;
+  
   }
 
   .content{
 
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
+    max-width: 250px;
+    display: inline-block;
+    word-wrap: break-word;
     
   }
-
- 
   
   .taskPlaceHolder{
 
-      width : 100%;
-      min-height: 300px;
-      height : auto;
-      box-sizing: border-box;
-      background-color: #2196F3;
-      padding:0px;
-      border-radius: 10px;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    width : 100%;
+    min-height: 300px;
+    height : auto;
+    box-sizing: border-box;
+    background-color: #2196F3;
+    padding:0px;
+    border-radius: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
       
   }
-
-  
-
-  
- 
 
   .categoryTitle{
 
@@ -161,6 +156,69 @@
     text-overflow: ellipsis;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+
+  }
+
+  .closeButtonCategory{
+
+    background-color: rgb(205, 67, 67);
+    margin-right: 20px ;
+    margin-top: 2px;
+    float: right;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    border: rgb(9, 9, 9);
+    border-width: 3px;
+    font-family: none;
+
+  }
+
+  .closeButton{
+
+    background-color: rgb(205, 67, 67);
+    float: right;
+    width: 30px;
+    height: auto;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    border: rgb(9, 9, 9);
+    border-width: 3px;
+
+  }
+
+
+  #popupTask {
+    display: none;
+    margin : 0 auto;
+  
+
+    z-index: 10;
+    width: 400px;
+    height: 600px;
+    position: absolute;
+    cursor: pointer;
+    background-color: green;
+  }
+
+  #popupNote{
+    z-index: 10;
+    margin: 0 auto;
+    display: none;
+    box-sizing: border-box;
+    resize: none;
+    width: 95%;
+    height: 70%;
+  }
+
+  #popupForm{
+    z-index: 10;
+    display: none;
 
   }
   
