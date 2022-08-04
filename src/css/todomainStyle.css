@@ -72,8 +72,8 @@
     grid-template-columns: repeat(4, 1fr) ;
     grid-gap: 20px;
     margin-top: 15px;
-    
-
+    position: absolute;
+    width: 100%;
   }
 
   #catInputField{
@@ -195,9 +195,8 @@
 
   #popupTask {
     display: none;
-    margin : 0 auto;
-  
-
+    justify-content: center;
+    align-content: center;
     z-index: 10;
     width: 400px;
     height: 600px;
@@ -207,7 +206,7 @@
   }
 
   #popupNote{
-    z-index: 10;
+    z-index: -1;
     margin: 0 auto;
     display: none;
     box-sizing: border-box;

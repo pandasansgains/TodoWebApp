@@ -7,6 +7,24 @@
 // Make a save planning function ( should e able to specify for a date)
 // Make login form and database for it 
 // Make export planning
+// FIX css bug to have the form display where i want ( center and on top of other stuff)
+// Figure out how to make a proper note box 
+
+// do we want to keep track of categories this way ?
+// we would like it to store the descriptions
+// It would be a problem when dragging and dropping tasks as they would be changing so also change the category 
+//data when moving the element around
+// It would be useful for 
+// -> organising and making some filters on tasks
+// -> would be easy to implment but need to keep track of dragged tasks in which container it is appended
+// -> would be useful to retrieve the note and other data
+// or we could approach the problem storing all the data within the div there seem to be a solution like data-* = 
+// The data would be saved according to a day and a user and we will just overwrite. this way when draggin and dropping it would not 
+//be that big of an issue  
+var categories = [];
+
+var currentTask = null; // current task being edited ( description or other ) from the popup menu
+
 
 function initContainer(container){
 
@@ -175,7 +193,6 @@ function saveDashboard(){
     
 }
 
-
 //TODO finish
 function saveTasks(taskPlaceHolder){
 
@@ -188,49 +205,28 @@ function saveTasks(taskPlaceHolder){
     for(let i = 0; i < tasks.length; i++){
 
         if(tasks[i].classList.contains("categoryTitle")){
+            // saving the title of the category
 
-            //console.log(tasks[i].textContent);
-
-            jsonTasks.categoryName = tasks[i].textContent; // should be the content of the span within
-
+            let catName = tasks[i].textContent;
+            jsonTasks.categoryName = catName.slice(0,-1); // remove text of cross (last char)
 
         }
-
-
 
         if(tasks[i].classList.contains("task")){
 
             let jsonTask = {};
+            let content = tasks[i].querySelector(".content");
+            let note = tasks[i].getAttribute("data-note");
 
-            console.log(tasks[i]);
-            console.log(tasks[i].children);
+            jsonTask.taskDescription = content.textContent;
+            jsonTask.note = note;
+            jsonTasks.tasks.push(jsonTask);
 
-            let content = tasks[i].children;
-            
-
-            for(let j = 0 ; j < content.length; j++){
-
-                console.log(content[j].classList);
-
-                if(content[j].classList.contains("content")){
-
-                    jsonTask.taskDescription = content[j].textContent;
-                    jsonTasks.tasks.push(jsonTask);
-        
-
-                }
-
-            }
         }
     }
 
-    console.log(JSON.stringify(jsonTasks));
     return jsonTasks;
 }
-
-
-
-
 
 function getDragAfterElement(container, y){
     
@@ -262,7 +258,6 @@ function getDragAfterElement(container, y){
     
 }
     
-
 // deletes this.parent 
 function deleteElem(elem){
     
@@ -315,7 +310,7 @@ function displayClockTime(){
     
     var x = new Date()
     document.getElementById('Date').innerHTML = x.getMonth() + "/" + x.getDate() + "/" + x.getYear();
-    document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() +"m " +x.getSeconds() +"s";
+    document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() +"m ";
     displayClock();
     
 }
@@ -330,17 +325,48 @@ function showForm(listelem) { // timeForm for task elements
     var div = document.getElementById("popupTask");
     var form = document.getElementById("popupForm");
     var textArea = document.getElementById("popupNote");
+    var taskNameForm = document.getElementById("taskName");
+
+    var taskName = listelem.querySelector('.content').innerHTML;// accessing name of the task
+    var noteData = listelem.getAttribute('data-note');// data of the note
+
+    // we need to set a ref to the listElem we clicked
+
+    document.getElementById("popupNote").value = noteData;// setting the value of the note to the one of this task
+
+    taskNameForm.innerHTML = taskName;
 
     div.style.display = "block";
     form.style.display = "block";
     textArea.style.display = "block";
-  
+
+    currentTask = listelem;// setting reference to currentTask for the submit of the note
 }
   
 function closeTheForm() {
     
-  document.getElementById("popupForm").style.display = "none";
+    var div = document.getElementById("popupTask");
+    var form = document.getElementById("popupForm");
+    var textArea = document.getElementById("popupNote");
+    var taskNameForm = document.getElementById("taskName");
+
+    // we need to set a ref to the listElem we clicked
+
+    taskNameForm.innerHTML = "";
+    div.style.display = "none";
+    form.style.display = "none";
+    textArea.style.display = "none";
+
+    currentTask = null;// setting reference to currentTask  
     
+}
+
+function setNote(){
+
+    let textAreaValue = document.getElementById("popupNote").value;
+
+    currentTask.setAttribute('data-note', textAreaValue);
+
 }
 
 

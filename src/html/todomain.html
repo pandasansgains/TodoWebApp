@@ -45,26 +45,25 @@
 
     <div id = "TaskListWrapper">
 
-       
+        <div id="popupTask">
 
+            <form id = "popupForm">
 
-    </div>
-
-    <div id="popupTask">
-
-        <form id = "popupForm">
-
-            <label for="taskName"> taskname: </label>
-            <p name = "taskName" class = "form"></p>
-
-        </form>
-
-        <textarea type="text" id="popupNote"  > </textarea>
-    </div>
-
+                <span class = "closeButton" onclick = "closeTheForm()">&times;</span>
     
+                <label for="taskName"> taskname: </label>
+                <p id = "taskName" class = "form"></p>
 
+            </form>
 
+            <textarea type="text" id="popupNote"> </textarea>
+            <button type = "submit" onclick="setNote()"> submit</button>
+    
+        </div>
+
+    </div>
+
+   
 </body>
 
 
