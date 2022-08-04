@@ -26,6 +26,9 @@ var categories = [];
 var currentTask = null; // current task being edited ( description or other ) from the popup menu
 
 
+var lastSavedPlan = {"categories":[{"tasks":[{"taskDescription":"Buy lemons","note":null},{"taskDescription":"Buy thyme","note":null},{"taskDescription":"Buy toilet paper","note":null}],"categoryName":"groceries"},{"tasks":[{"taskDescription":"Study CSS","note":"Study it this way"},{"taskDescription":"Study HTML","note":null},{"taskDescription":"Study JS","note":null}],"categoryName":"school"},{"tasks":[{"taskDescription":"BJJ","note":"Don't forget water"},{"taskDescription":"Volleyball","note":"Don't forget towel"}],"categoryName":"sports"}]};
+
+
 function initContainer(container){
 
     container.addEventListener('dragover', e =>{
@@ -105,48 +108,19 @@ function createContainer(categoryName){
     input.classList.add("taskInputField");
     input.setAttribute("placeholder","Enter Task");
 
+    // call createTask with note = null 
     input.onkeyup = function(event){
-
         let text = this.value;
 
         if(event.key == "Enter"){
         
             if( text != ""){
 
-                var listElem = document.createElement('li');
-                listElem.classList.add('draggable');
-                listElem.classList.add('task');
-                listElem.setAttribute('draggable',true);
-                initDraggable(listElem); // set the dragging classnames when dragged
-                listElem.ondblclick = function(){
-                    showForm(listElem);
-                }
-
-
-                var button = document.createElement('span');
-                button.classList.add('closeButton');
-                button.innerHTML= "&times;"
-                button.onclick =function(){
-
-                    deleteElem(this);
-                }
-                
-
-
-                var span = document.createElement('span');
-                span.classList.add('content');
-                span.innerHTML = text;
-             
-
-                listElem.appendChild(span);
-                listElem.appendChild(button);
-
-                // we are in the grid-item next element sibling is UL taskplaceholder
-                this.nextElementSibling.appendChild(listElem);
-                input.value = "";// reset to placeholder 
+                createTask(this.nextElementSibling, text, "");
+                // this.nextElementSibling is the container ( we are in the input field so UL is sibling)
             }
+            input.value = "";// reset to placeholder 
         } 
-
     }
 
 
@@ -155,6 +129,54 @@ function createContainer(categoryName){
     var wrapper = document.getElementById("TaskListWrapper");
     wrapper.appendChild(div);
 
+    return ul;
+
+
+}
+
+// create the function this way and also calll it in createContainer
+function createTask(container, taskName, note){
+
+    var listElem = document.createElement('li');
+    listElem.classList.add('draggable');
+    listElem.classList.add('task');
+    listElem.setAttribute('draggable',true);
+    initDraggable(listElem); // set the dragging classnames when dragged
+    listElem.ondblclick = function(){
+        showForm(listElem);
+    }
+
+
+    var button = document.createElement('span');
+    button.classList.add('closeButton');
+    button.innerHTML= "&times;"
+    button.onclick =function(){
+
+        deleteElem(this);
+    }
+    
+
+
+    var span = document.createElement('span');
+    span.classList.add('content');
+    span.innerHTML = taskName;
+ 
+
+    listElem.appendChild(span);
+    listElem.appendChild(button);
+
+    if(note === null){
+        listElem.setAttribute("data-note", "");
+    }
+    else{
+        listElem.setAttribute("data-note", note);
+
+    }
+
+
+    // we are in the grid-item next element sibling is UL taskplaceholder
+    container.appendChild(listElem);
+    //input.value = "";// reset to placeholder 
 
 }
 //called in the input field at the top
@@ -190,6 +212,12 @@ function saveDashboard(){
     }
 
     console.log(JSON.stringify(output));
+
+    lastSavedPlan = JSON.stringify(output);// set it so we can try and laod the dashboard
+
+    // TODO save it to backend . For now save in lastSavedPlan
+
+
     
 }
 
@@ -201,6 +229,8 @@ function saveTasks(taskPlaceHolder){
     jsonTasks.tasks = [];
 
     let tasks = taskPlaceHolder.children;
+
+    //TODO later investigate but we can replace by querySelector
 
     for(let i = 0; i < tasks.length; i++){
 
@@ -227,6 +257,37 @@ function saveTasks(taskPlaceHolder){
 
     return jsonTasks;
 }
+
+
+function loadDashboard(jsonTasks){
+    // will be given a date as input and then fetch the dashboard from backend
+
+
+    console.log(lastSavedPlan);
+
+    let data = lastSavedPlan;
+
+    Object.entries(data.categories).forEach((catObj)=>{// iterate over each category
+
+        console.log(catObj);
+        var container = createContainer(catObj[1].categoryName);
+
+        Object.entries(catObj[1].tasks).forEach((taskObj)=>{
+
+
+            //console.log(container);
+
+            console.log(taskObj[1].note)
+
+            createTask(container, taskObj[1].taskDescription, taskObj[1].note);
+
+        })
+
+    })
+
+}
+
+
 
 function getDragAfterElement(container, y){
     
@@ -318,7 +379,6 @@ function displayClockTime(){
 function colorElem(elem, color){
     elem.style.backgroundColor = color;
 }
-
 
 function showForm(listelem) { // timeForm for task elements
 
