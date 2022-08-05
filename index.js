@@ -48,27 +48,18 @@ app.listen(
 
 )
 
-//base page
+//base url
 app.get('/',function(req,res) { // to open the main file 
-    res.render('main');
+    res.render('main',{status : ""});
 });
 
 
-app.get('/authorised/:username', function(req,res) {
-
-
-    const {args} = req.params;
-
-    res.sendFile( path.join(__dirname , '/src/html/todomain.html')); // adding the 
-
-    console.log(args);
-
-})
 
 // login page called when clicked . how to call it from html ? should i make a request or 
 // can i leave it as href
 app.get('/auth',function(req,res) { // to open the main file 
-    res.sendFile( path.join(__dirname,'/src/html/login.html')); // adding the 
+
+    res.render("login");
 });
 
 //TODO separate
@@ -86,7 +77,6 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
 
                 req.session.loggedin = true;
 				req.session.username = username;
-                console.log("logged in as" + username);
                 res.render('main', {status : "logged in as "+ username});
             }
             res.end();
