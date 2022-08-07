@@ -2,8 +2,11 @@
 
     <script src="../JS/todomain.js" type = "text/javascript" defer></script> 
     <script src="../JS/login.js" type = "text/javascript" defer></script> 
+    <script src="../JS/forms.js" type = "text/javascript" defer></script> 
+    <script src="../JS/dataHandling.js" type = "text/javascript" defer></script> 
         
     <link rel='stylesheet' type ="text/css" href='../css/todomainStyle.css'>
+    <link rel='stylesheet' type ="text/css" href='../css/popupFormsStyle.css'>
 
     <header>     
         
@@ -30,7 +33,11 @@
 
         <div class = "navbar">
             <a onclick=" loadDashboard()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Load Planning </a>
-            <a onclick = "saveDashboard()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Save Planning </a>
+
+            <a onclick = "openSaveForm()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Save Planning 
+                
+            </a>
+
             <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Export Planning </a>
             <a href = "/auth" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Login </a>
             <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >About </a>
@@ -45,24 +52,30 @@
 <body>
 
     <div id = "TaskListWrapper">
-
         <div id="popupTask">
-
             <form id = "popupForm">
-
-                <span class = "closeButton" onclick = "closeTheForm()">&times;</span>
-    
+                <span class = "closeButton" onclick = "closeNoteForm(this)">&times;</span>
                 <label for="taskName"> taskname: </label>
                 <p id = "taskName" class = "form"></p>
-
             </form>
-
             <textarea type="text" id="popupNote"> </textarea>
             <button type = "submit" onclick="setNote()"> submit</button>
-    
         </div>
 
+        <div id="savePopup">
+            <form id = "savePopupForm">
+                <span class = "closeButton" onclick = "closeTheForm(this)">&times;</span>
+                <label for="selectDate"> Select Date: </label>
+                <input type = "date" id = "selectDate">
+            </form>
+            <button type = "submit" onclick="saveDashboard()"> submit</button>
+        </div>
     </div>
+
+
+    
+
+    
 
    
 </body>

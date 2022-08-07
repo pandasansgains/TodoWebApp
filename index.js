@@ -36,7 +36,7 @@ app.set('view engine', 'ejs');
 
 // TODO add password to config for now leave it as secret for test
 app.use(session({
-	secret: 'secret',
+	secret:  `${config.SESSIONPASSWORD}`,
 	resave: true,
 	saveUninitialized: true
 }));
@@ -53,13 +53,10 @@ app.get('/',function(req,res) { // to open the main file
     res.render('main',{status : ""});
 });
 
-
-
 // login page called when clicked . how to call it from html ? should i make a request or 
 // can i leave it as href
 app.get('/auth',function(req,res) { // to open the main file 
-
-    res.render("login");
+    res.render("login", {connectionStatus: ''});
 });
 
 //TODO separate
@@ -79,14 +76,53 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
 				req.session.username = username;
                 res.render('main', {status : "logged in as "+ username});
             }
+            else{// no account matching 
+                res.render('login', {connectionStatus: "Password or Login incorrect. Please enter Username and Password"});
+            }
             res.end();
         })
     } 
-    else{
-        res.send('Please enter Username and Password');
+    else{// TODO if wrong we need to display the thing
+
+        res.render('login', {connectionStatus: "Please enter Username and Password"});
         res.end;
     }
 
+})
+
+
+app.get('/plannings', (req,res)=>{
+
+    // provides all the dates of saved dashboards
+
+    const  username  = session.username;
+
+    if(req.session.loggedin ){// logged in and username is valid
+
+        //TODO redact query 
+        connection.query("REDACT query here", function(err, sqlResponse){
+
+        })
+    }
+    // check 
+})
+
+
+app.post('/planning', (req, res) => {
+
+    const jsonObj = req.body;
+    const username = session.username;
+
+    if(req.session.loggedin){ // session is active
+
+        connection.query("QUERY HERE", function(err,sqlResponse){
+
+            if(err){
+                res.send("Could not save dashboard for: add reason");
+            };
+            res.end;
+        })
+    }
 })
 
 

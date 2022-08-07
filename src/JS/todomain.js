@@ -26,9 +26,6 @@ var categories = [];
 var currentTask = null; // current task being edited ( description or other ) from the popup menu
 
 
-var lastSavedPlan = {"categories":[{"tasks":[{"taskDescription":"Buy lemons","note":null},{"taskDescription":"Buy thyme","note":null},{"taskDescription":"Buy toilet paper","note":null}],"categoryName":"groceries"},{"tasks":[{"taskDescription":"Study CSS","note":"Study it this way"},{"taskDescription":"Study HTML","note":null},{"taskDescription":"Study JS","note":null}],"categoryName":"school"},{"tasks":[{"taskDescription":"BJJ","note":"Don't forget water"},{"taskDescription":"Volleyball","note":"Don't forget towel"}],"categoryName":"sports"}]};
-
-
 function initContainer(container){
 
     container.addEventListener('dragover', e =>{
@@ -197,98 +194,6 @@ function createCategory(event){
         } 
 }
 
-// generates a JSON object based on a dashboard
-function saveDashboard(){
-
-    let output = {};
-    output.categories = [];
-
-    let taskHolders = document.getElementsByClassName("taskPlaceHolder");
-
-    for(let i = 0 ; i < taskHolders.length; i++){
-
-        output.categories.push(saveTasks(taskHolders[i]));
-        
-    }
-
-    console.log(JSON.stringify(output));
-
-    lastSavedPlan = JSON.stringify(output);// set it so we can try and laod the dashboard
-
-    // TODO save it to backend . For now save in lastSavedPlan
-
-
-    
-}
-
-//TODO finish
-function saveTasks(taskPlaceHolder){
-
-    let jsonTasks = {};
-
-    jsonTasks.tasks = [];
-
-    let tasks = taskPlaceHolder.children;
-
-    //TODO later investigate but we can replace by querySelector
-
-    for(let i = 0; i < tasks.length; i++){
-
-        if(tasks[i].classList.contains("categoryTitle")){
-            // saving the title of the category
-
-            let catName = tasks[i].textContent;
-            jsonTasks.categoryName = catName.slice(0,-1); // remove text of cross (last char)
-
-        }
-
-        if(tasks[i].classList.contains("task")){
-
-            let jsonTask = {};
-            let content = tasks[i].querySelector(".content");
-            let note = tasks[i].getAttribute("data-note");
-
-            jsonTask.taskDescription = content.textContent;
-            jsonTask.note = note;
-            jsonTasks.tasks.push(jsonTask);
-
-        }
-    }
-
-    return jsonTasks;
-}
-
-
-function loadDashboard(jsonTasks){
-    // will be given a date as input and then fetch the dashboard from backend
-
-
-    console.log(lastSavedPlan);
-
-    let data = lastSavedPlan;
-
-    Object.entries(data.categories).forEach((catObj)=>{// iterate over each category
-
-        console.log(catObj);
-        var container = createContainer(catObj[1].categoryName);
-
-        Object.entries(catObj[1].tasks).forEach((taskObj)=>{
-
-
-            //console.log(container);
-
-            console.log(taskObj[1].note)
-
-            createTask(container, taskObj[1].taskDescription, taskObj[1].note);
-
-        })
-
-    })
-
-}
-
-
-
 function getDragAfterElement(container, y){
     
     
@@ -334,7 +239,6 @@ function deleteCategory(elem){
 
 }
 
-
 function processInput(event){
     
     let input = document.getElementById("contentHolder");
@@ -360,7 +264,6 @@ function processInput(event){
     } 
 }
 
-
 function displayClock(){
     var refresh=1000; // Refresh rate in milli seconds
     var mytime=setTimeout('displayClockTime()',refresh)
@@ -370,7 +273,9 @@ function displayClockTime(){
     
     
     var x = new Date()
-    document.getElementById('Date').innerHTML = x.getMonth() + "/" + x.getDate() + "/" + x.getYear();
+    //console.log(x.getYear());
+
+    document.getElementById('Date').innerHTML = x.getMonth() + "/" + x.getDate() + "/" + x.getFullYear();
     document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() +"m ";
     displayClock();
     
@@ -380,47 +285,6 @@ function colorElem(elem, color){
     elem.style.backgroundColor = color;
 }
 
-function showForm(listelem) { // timeForm for task elements
-
-    var div = document.getElementById("popupTask");
-    var form = document.getElementById("popupForm");
-    var textArea = document.getElementById("popupNote");
-    var taskNameForm = document.getElementById("taskName");
-
-    var taskName = listelem.querySelector('.content').innerHTML;// accessing name of the task
-    var noteData = listelem.getAttribute('data-note');// data of the note
-
-    // we need to set a ref to the listElem we clicked
-
-    document.getElementById("popupNote").value = noteData;// setting the value of the note to the one of this task
-
-    taskNameForm.innerHTML = taskName;
-
-    div.style.display = "block";
-    form.style.display = "block";
-    textArea.style.display = "block";
-
-    currentTask = listelem;// setting reference to currentTask for the submit of the note
-}
-  
-function closeTheForm() {
-    
-    var div = document.getElementById("popupTask");
-    var form = document.getElementById("popupForm");
-    var textArea = document.getElementById("popupNote");
-    var taskNameForm = document.getElementById("taskName");
-
-    // we need to set a ref to the listElem we clicked
-
-    taskNameForm.innerHTML = "";
-    div.style.display = "none";
-    form.style.display = "none";
-    textArea.style.display = "none";
-
-    currentTask = null;// setting reference to currentTask  
-    
-}
-
 function setNote(){
 
     let textAreaValue = document.getElementById("popupNote").value;
@@ -428,12 +292,6 @@ function setNote(){
     currentTask.setAttribute('data-note', textAreaValue);
 
 }
-
-
-
-
-
-
 
 displayClockTime();
 
