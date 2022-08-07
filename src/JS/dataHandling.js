@@ -42,6 +42,15 @@ function saveDashboard(){
     // TODO save it to backend . For now save in lastSavedPlan
 }
 
+function logout(){
+
+    var xmlRequest = new XMLHttpRequest();
+    xmlRequest.open("post","/logout", true);
+    xmlRequest.setRequestHeader('content-type', 'text/plain');
+    xmlRequest.send();
+
+}
+
 //TODO finish
 function saveTasks(taskPlaceHolder){
 
@@ -106,3 +115,5 @@ function loadDashboard(jsonTasks){
     })
 
 }
+
+

@@ -50,7 +50,14 @@ app.listen(
 
 //base url
 app.get('/',function(req,res) { // to open the main file 
-    res.render('main',{status : ""});
+
+    if(req.session.loggedin){
+        res.render('main',{status : "logged in as :" + req.session.username});
+    }
+    else{
+        res.render('main', {status : ''});
+    }
+    
 });
 
 // login page called when clicked . how to call it from html ? should i make a request or 
@@ -74,7 +81,9 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
 
                 req.session.loggedin = true;
 				req.session.username = username;
-                res.render('main', {status : "logged in as "+ username});
+
+                res.redirect('/');
+                
             }
             else{// no account matching 
                 res.render('login', {connectionStatus: "Password or Login incorrect. Please enter Username and Password"});
@@ -86,6 +95,22 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
 
         res.render('login', {connectionStatus: "Please enter Username and Password"});
         res.end;
+    }
+})
+
+app.post('/logout',function(req,res){
+
+    console.log("reached");
+
+    if(req.session.loggedin){
+
+        console.log("true");
+
+        req.session.loggedin = false;
+        req.session.username = null;
+        //TODO make logout work
+        res.render('main', {status : ""});
+
     }
 
 })
@@ -111,17 +136,22 @@ app.get('/plannings', (req,res)=>{
 app.post('/planning', (req, res) => {
 
     const jsonObj = req.body;
-    const username = session.username;
+    const username = req.session.username;
 
     if(req.session.loggedin){ // session is active
 
-        connection.query("QUERY HERE", function(err,sqlResponse){
+        res.send("logged in " + username);
 
-            if(err){
-                res.send("Could not save dashboard for: add reason");
-            };
-            res.end;
-        })
+        // connection.query("QUERY HERE", function(err,sqlResponse){
+
+        //     if(err){
+        //         res.send("Could not save dashboard for: add reason");
+        //     };
+        //     res.end;
+        // })
+    }
+    else{
+        res.send("Not logged in, we cannot save.");
     }
 })
 
