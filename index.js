@@ -110,6 +110,7 @@ app.post('/logout',function(req,res){
         req.session.username = null;
         //TODO make logout work
         res.render('main', {status : ""});
+        res.end;
 
     }
 

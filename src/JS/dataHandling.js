@@ -47,6 +47,14 @@ function logout(){
     var xmlRequest = new XMLHttpRequest();
     xmlRequest.open("post","/logout", true);
     xmlRequest.setRequestHeader('content-type', 'text/plain');
+
+
+    xmlRequest.onreadystatechange = function(){
+        if (xmlRequest.readyState == 4 && xmlRequest.status == 200) { // succesfull
+
+            location.reload(true);// refresh page
+        }
+    }
     xmlRequest.send();
 
 }
