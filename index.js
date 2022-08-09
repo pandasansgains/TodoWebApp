@@ -22,7 +22,8 @@ const connection = mysql.createConnection({ // create connection
 
     host:  `${config.HOST}`,
     user: `${config.USER}`,
-    password: `${config.PASSWORD}`
+    password: `${config.PASSWORD}`,
+    multipleStatements : true
 
 })
 
@@ -134,27 +135,118 @@ app.get('/plannings', (req,res)=>{
 })
 
 
+//TODO make a dashboard object in the database
 app.post('/planning', (req, res) => {
 
     const jsonObj = req.body;
-    const username = req.session.username;
 
+    let username = req.session.username;
+    let date = jsonObj.date;
+    let categories = jsonObj.categories; // each category has a list of tasks
+ 
     if(req.session.loggedin){ // session is active
 
-        res.send("logged in " + username);
+        handleDashBoard(username,date,categories);// saves to the DB sequentially
+        res.send("saved to backend");
 
-        // connection.query("QUERY HERE", function(err,sqlResponse){
-
-        //     if(err){
-        //         res.send("Could not save dashboard for: add reason");
-        //     };
-        //     res.end;
-        // })
     }
     else{
         res.send("Not logged in, we cannot save.");
     }
 })
+
+
+
+function insertDashboard(user,date){
+
+    return new Promise(( resolve,reject) =>{ connection.query("INSERT INTO todoapp.dashboard (user,date) VALUES (?,?); SELECT LAST_INSERT_ID()",[user,date], function(err,sqlResponse){// response from DB
+
+            if (err) {
+                reject(err);
+            }
+            resolve(sqlResponse);// here the value is undefined
+            // if no error successfully inserted
+            // if error (either wrong datatype or user does not exist)
+        })
+    })
+}
+
+function insertCategory(dashboardID, categoryName){
+
+    return new Promise((resolve, reject) =>  connection.query("INSERT INTO todoapp.category (categoryName,dashboardId) VALUES (?,?); SELECT LAST_INSERT_ID()  ",[categoryName,dashboardID], function(err,sqlResponse){// response from DB
+
+        if (err) {
+            reject(err);
+        };
+        resolve(sqlResponse);
+        // if no error successfully inserted
+        // if error (either wrong datatype or user does not exist)
+    }))
+
+}
+
+function insertTask(description, title, categoryID){
+
+    connection.query("INSERT INTO todoapp.task (description,title,categoryID) VALUES (?,?,?) ",[description,title,categoryID], function(err,sqlResponse){// response from DB
+        if (err) {
+
+            console.log("Error inserting task");
+        
+            console.log(err);
+            return null;
+        };
+        // if no error successfully inserted
+        // if error (either wrong datatype or user does not exist)
+    })
+}
+
+// saves all data of JSOn object to DB
+function handleDashBoard(user, date, categories){
+
+    insertDashboard(user,date)
+        .then(sqlResponse => {
+
+            dashboardID = sqlResponse[0].insertId;
+            
+            Object.entries(categories).forEach((element) =>{
+
+                let categoryname = element[1].categoryName;
+                let tasks = element[1].tasks;
+
+                insertCategory(dashboardID, categoryname)
+                    .then(sqlResponse =>{
+
+                        console.log(sqlResponse + "RES2");
+
+                        let categoryID = sqlResponse[0].insertId;
+
+                        Object.entries(tasks).forEach((task) =>{
+
+                           
+                            let taskDescription = task[1].taskDescription;
+                            let taskNote = task[1].note;
+
+                            insertTask(taskNote,taskDescription,categoryID);            
+                        })
+
+                    })
+                    .catch(err=>{
+                        throw(err);
+                    });
+            })
+
+        })
+        .catch(err=>{
+            throw(err);
+        });
+  
+
+
+
+}
+
+
+
 
 
 app.get('/product/:id' , (req, res) => {// response we send as get

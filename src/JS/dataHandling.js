@@ -1,5 +1,5 @@
 
-var lastSavedPlan = {"categories":[{"tasks":[{"taskDescription":"Buy lemons","note":null},{"taskDescription":"Buy thyme","note":null},{"taskDescription":"Buy toilet paper","note":null}],"categoryName":"groceries"},{"tasks":[{"taskDescription":"Study CSS","note":"Study it this way"},{"taskDescription":"Study HTML","note":null},{"taskDescription":"Study JS","note":null}],"categoryName":"school"},{"tasks":[{"taskDescription":"BJJ","note":"Don't forget water"},{"taskDescription":"Volleyball","note":"Don't forget towel"}],"categoryName":"sports"}]};
+var lastSavedPlan = {"categories":[{"tasks":[{"taskDescription":"task1","note":"note 1"},{"taskDescription":"task2","note":""}],"categoryName":"Cat1"},{"tasks":[{"taskDescription":"nnn","note":"no text"}],"categoryName":"cat2"}],"date":"2022-08-31"};
 
 
 // generates a JSON object based on a dashboard
@@ -35,6 +35,8 @@ function saveDashboard(){
             alert(xmlRequest.responseText);
         }
     }
+
+    // TODO change to output after when done testing
     xmlRequest.send(JSON.stringify(output));
 
     // 
@@ -47,7 +49,6 @@ function logout(){
     var xmlRequest = new XMLHttpRequest();
     xmlRequest.open("post","/logout", true);
     xmlRequest.setRequestHeader('content-type', 'text/plain');
-
 
     xmlRequest.onreadystatechange = function(){
         if (xmlRequest.readyState == 4 && xmlRequest.status == 200) { // succesfull
