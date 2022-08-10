@@ -1,4 +1,10 @@
 
+
+//TODO handle errors in backend . Make it such that we can't create dublicate categories.
+
+
+
+
 const express = require('express');
 const mysql = require('mysql'); // mysql library
 const path = require('path')
@@ -118,24 +124,96 @@ app.post('/logout',function(req,res){
 })
 
 
+
+
+
+
+
+//LOAD DATES OF ALL PLANNINGS
 app.get('/plannings', (req,res)=>{
 
-    // provides all the dates of saved dashboards
-
+    // provides all the dates of saved dashboards for given username and then another request will fetch for certain user and certain date
     const  username  = session.username;
-
     if(req.session.loggedin ){// logged in and username is valid
 
-        //TODO redact query 
-        connection.query("REDACT query here", function(err, sqlResponse){
+        return new Promise(( resolve,reject) =>{ connection.query("SELECT d.date from todoapp.dashboard d WHERE d.user = ?",[username], function(err,sqlResponse){// response from DB
 
+            if (err) {
+                reject(res);// so we can send response handling the catch
+            }
+            resolve(sqlResponse);// here the value is undefined
+            // if no error successfully inserted
+            // if error (either wrong datatype or user does not exist)
         })
-    }
-    // check 
+    })}
+
 })
 
+// GET ONE SPECIFIC DASHBOARD ID
+app.get('/plannings/:date', (req,res) =>{
 
-//TODO make a dashboard object in the database
+    const {date} = req.params;
+
+    
+    console.log(date);
+    var jsonOut = {};
+
+
+    if(req.session.loggedin){
+
+        const categories = null;
+        const tasks = null;
+        const username = req.session.username;
+
+        // GETS ID OF DASHBOARD FOR date and username
+        getDashboardId(String(date),username)
+            .then((sqlResponse) =>{ 
+
+                let dashboardId = null;
+            
+                if(sqlResponse[0] != undefined){
+                   dashboardId = sqlResponse[0].dashboardId;
+                   console.log(dashboardId);
+                 
+                }
+                getCategories(dashboardId)
+                    .then((categorySqlResponse) => {
+
+                        const categories = categorySqlResponse;// TODO access right ID
+                        const promises = [];
+        
+                        console.log(categorySqlResponse);
+        
+                        // Object.entries(categories).forEach((category) =>{
+                        //     let categoryID = category[1].id; // TODO access right ID
+                        //     promises.push(getTasks(categoryID)); //adding the promises
+                        // })
+        
+                        // //Executed when all tasks are fetched for all categories
+                        // Promise.all(promises).then((values)=> {
+                        //     // TODO send and load the dashboard in JS to frontEnd
+        
+                        //     res.send(jsonOut);// send the data
+                        // })
+        
+                    })
+                    .catch((err) =>{throw (err)})
+               
+                //ID in sqlResponse
+            })
+            
+           
+
+        .catch((err) =>{throw (err)})
+    }
+
+
+
+})
+    
+
+
+// SAVE A PLANNING
 app.post('/planning', (req, res) => {
 
     const jsonObj = req.body;
@@ -200,7 +278,8 @@ function insertTask(description, title, categoryID){
     })
 }
 
-// saves all data of JSOn object to DB
+//TODO RENAME
+// SAVES ALL DATA OF 1 DASHBOARD (FORMAT.JSON) TO DB
 function handleDashBoard(user, date, categories){
 
     insertDashboard(user,date)
@@ -244,6 +323,49 @@ function handleDashBoard(user, date, categories){
 
 
 }
+
+
+
+// PROMISE RETURNS 1 dashboard ID
+function getDashboardId(date, username){
+        // gets dashboarID
+        return new Promise((resolve,reject) =>{ connection.query("SELECT d.dashboardId from todoapp.dashboard d WHERE d.user = ? AND d.date = ?;",[username,date], function(err,sqlResponse){// response from DB
+
+            if (err) {
+                reject(res);// so we can send response handling the catch
+            }
+            resolve(sqlResponse);   
+        })
+    })
+}
+
+// RETURNS ALL CATEGORIES ASSOCIATED TO 1 DASHBOARD
+function getCategories(dashboardID){
+
+    return new Promise((resolve,reject) =>{ connection.query("SELECT c.* from todoapp.category c WHERE c.dashboardId = ?;",[dashboardID], function(err,sqlResponse){// response from DB
+
+        if (err) {
+            reject(err);// so we can send response handling the catch
+        }
+        resolve(sqlResponse);
+    })
+})}
+
+// RETURNS ALL TASKS ASSOCIATED TO 1 CATEGORY
+function getTasks(categoryID){
+
+    return new Promise((resolve,reject) =>{ connection.query("SELECT t.* from todoapp.task t WHERE t.categoryId = ?;",[dashboardID], function(err,sqlResponse){// response from DB
+        if (err) {
+            reject(res);// so we can send response handling the catch
+        }
+        resolve(sqlResponse);
+     
+    })})
+}
+
+
+
+
 
 
 
