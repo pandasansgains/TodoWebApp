@@ -161,8 +161,10 @@ app.get('/plannings/:date', (req,res) =>{
 
     if(req.session.loggedin){
 
-        const categories = null;
-        const tasks = null;
+        // final variables where we return data
+        var categoriesOUT = null;
+        var tasksOUT = null;
+
         const username = req.session.username;
 
         // GETS ID OF DASHBOARD FOR date and username
@@ -173,28 +175,40 @@ app.get('/plannings/:date', (req,res) =>{
             
                 if(sqlResponse[0] != undefined){
                    dashboardId = sqlResponse[0].dashboardId;
-                   console.log(dashboardId);
+                  
                  
                 }
                 getCategories(dashboardId)
                     .then((categorySqlResponse) => {
 
-                        const categories = categorySqlResponse;// TODO access right ID
+                        categoriesOUT = categorySqlResponse; // saving for OUT
+
+                        const categories = Object.values(JSON.parse(JSON.stringify(categorySqlResponse)));// TODO access right ID
                         const promises = [];
+
+                        // [
+                        //     RowDataPacket { categoryName: 'c1', categoryID: 1, dashboardId: 1 },
+                        //     RowDataPacket { categoryName: 'c2', categoryID: 2, dashboardId: 1 },
+                        //     RowDataPacket { categoryName: 'c3', categoryID: 3, dashboardId: 1 }
+                        // ] categorySqlResponse[0].categoryName  = 'c1'
         
-                        console.log(categorySqlResponse);
-        
-                        // Object.entries(categories).forEach((category) =>{
-                        //     let categoryID = category[1].id; // TODO access right ID
-                        //     promises.push(getTasks(categoryID)); //adding the promises
-                        // })
+                        Object.entries(categories).forEach((category) =>{
+                            // todo error over iterations
+                            //[ '0', { categoryName: 'c1', categoryID: 1, dashboardId: 1 } ]
+                            let categoryID = category[1].categoryID; // TODO access right ID
+                            promises.push(getTasks(categoryID)); //adding the promises
+                        })
         
                         // //Executed when all tasks are fetched for all categories
-                        // Promise.all(promises).then((values)=> {
-                        //     // TODO send and load the dashboard in JS to frontEnd
-        
-                        //     res.send(jsonOut);// send the data
-                        // })
+                        Promise.all(promises).then((values)=> {
+
+                            tasksOUT = values;// saving for OUT
+                            jsonOut.categories = categoriesOUT;
+                            jsonOut.tasks = tasksOUT;
+                            // TODO add dashboard DATA if we need it 
+                            console.log(JSON.stringify(jsonOut));
+                            res.send(jsonOut); // sending data from db
+                        })
         
                     })
                     .catch((err) =>{throw (err)})
@@ -354,10 +368,11 @@ function getCategories(dashboardID){
 // RETURNS ALL TASKS ASSOCIATED TO 1 CATEGORY
 function getTasks(categoryID){
 
-    return new Promise((resolve,reject) =>{ connection.query("SELECT t.* from todoapp.task t WHERE t.categoryId = ?;",[dashboardID], function(err,sqlResponse){// response from DB
+    return new Promise((resolve,reject) =>{ connection.query("SELECT t.* from todoapp.task t WHERE t.categoryId = ?;",[categoryID], function(err,sqlResponse){// response from DB
         if (err) {
             reject(res);// so we can send response handling the catch
         }
+        console.log(sqlResponse + "----------");
         resolve(sqlResponse);
      
     })})
