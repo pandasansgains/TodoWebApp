@@ -32,8 +32,21 @@
         </div>
 
         <div class = "navbar">
-            <a onclick=" loadDashboard()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Load Planning </a>
 
+            <div class ="dropDown">
+               
+                <a class = "navButton" onclick=" loadDashboard(); loadForm(this)"  onmouseover = "colorElem(this,'red')"  onmouseleave="colorElem(this,'#333')">  Load Planning  </a>
+                <div class = "dropDown-content"  >
+                    
+                    <a > content 1 </a>
+                    <a > content 2 </a>
+                    <a > content 3 </a>
+
+                </div>
+
+            </div>
+
+            <a ></a>
             <a onclick = "openSaveForm()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Save Planning  </a>
             <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Export Planning </a>
             <a href = "/auth" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Login </a>

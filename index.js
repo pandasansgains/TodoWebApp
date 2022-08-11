@@ -129,27 +129,27 @@ app.post('/logout',function(req,res){
 
 
 
-//LOAD DATES OF ALL PLANNINGS
+//LOAD DATES OF ALL PLANNINGS IF LOGGED IN
 app.get('/plannings', (req,res)=>{
 
     // provides all the dates of saved dashboards for given username and then another request will fetch for certain user and certain date
-    const  username  = session.username;
+    const  username  = req.session.username;
     if(req.session.loggedin ){// logged in and username is valid
 
-        return new Promise(( resolve,reject) =>{ connection.query("SELECT d.date from todoapp.dashboard d WHERE d.user = ?",[username], function(err,sqlResponse){// response from DB
+        connection.query("SELECT d.date from todoapp.dashboard d WHERE d.user = ?",[username], function(err,sqlResponse){// response from DB
 
             if (err) {
-                reject(res);// so we can send response handling the catch
+                throw(err);// so we can send response handling the catch
             }
-            resolve(sqlResponse);// here the value is undefined
-            // if no error successfully inserted
-            // if error (either wrong datatype or user does not exist)
+
+            res.send(JSON.stringify(sqlResponse));// here the value is undefined
+          
         })
-    })}
+    }
 
 })
 
-// GET ONE SPECIFIC DASHBOARD ID
+// GET ONE SPECIFIC DASHBOARD ID BY DATE ONLY IF LOGGED IN
 app.get('/plannings/:date', (req,res) =>{
 
     const {date} = req.params;

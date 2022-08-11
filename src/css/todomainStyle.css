@@ -38,10 +38,6 @@
 }
 
 
-#navbarDiv{
-    background-color: rgb(14, 130, 231);
-}
-
 .navbar {
   overflow: hidden;
   background-color: #333;
@@ -65,6 +61,24 @@
 .navbarButton{
     display: block;
 }  
+
+
+dropDown{
+  display: inline-block;
+}
+
+.dropDown-content{
+  display: block;
+  z-index: 10;
+}
+
+.dropDown :hover div{
+  display: none;
+  
+}
+
+
+
 
 #TaskListWrapper{
 

@@ -264,6 +264,16 @@ function processInput(event){
     } 
 }
 
+function loadForm(form){
+    //TODO implement load form display the dropDonw as block
+
+
+
+
+}
+
+
+
 function displayClock(){
     var refresh=1000; // Refresh rate in milli seconds
     var mytime=setTimeout('displayClockTime()',refresh)
