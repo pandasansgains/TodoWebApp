@@ -6,6 +6,7 @@
     <script src="../JS/dataHandling.js" type = "text/javascript" defer></script> 
         
     <link rel='stylesheet' type ="text/css" href='../css/todomainStyle.css'>
+    <link rel='stylesheet' type ="text/css" href='../css/navbarStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/popupFormsStyle.css'>
 
     <header>     
@@ -33,27 +34,33 @@
 
         <div class = "navbar">
 
-            <div class ="dropDown">
-               
-                <a class = "navButton" onclick=" loadDashboard(); loadForm(this)"  onmouseover = "colorElem(this,'red')"  onmouseleave="colorElem(this,'#333')">  Load Planning  </a>
-                <div class = "dropDown-content"  >
-                    
-                    <a > content 1 </a>
-                    <a > content 2 </a>
-                    <a > content 3 </a>
+            <div class="dropDown inlineNav">
 
+                <a  class = "navButton" onmouseover="getPlannings(this.nextElementSibling)" onclick = "loadDashboard(null)">  Load Planning  </a>
+                <div class="dropdown-content">
                 </div>
 
             </div>
 
-            <a ></a>
-            <a onclick = "openSaveForm()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Save Planning  </a>
-            <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Export Planning </a>
-            <a href = "/auth" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Login </a>
-            <a onclick = "logout()" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >Log out </a>
-            <a href=" = ggg" class = "navButton" onmouseover = "colorElem(this,'red')" onmouseleave="colorElem(this,'#333')" >About </a>
+            <div class = "inlineNav" onclick = "openSaveForm()">
+                <a  class = "navButton"   >Save Planning  </a>
+            </div>
 
-           
+            <div  class = "inlineNav">
+                <a href=" = ggg" class = "navButton" >Export Planning </a>
+            </div>
+
+            <div  class = "inlineNav" onclick = "location.href = ('/auth')" >
+                <a  class = "navButton"  >Login </a>
+            </div>
+
+            <div  class = "inlineNav"  onclick = "logout()">
+                <a class = "navButton">Log out </a>
+            </div>
+
+            <div class=" inlineNav" >
+                <a href=" = ggg" class = "navButton" >About </a>
+            </div>
 
             <a><input id = "catInputField" maxlength = "42" type="text" class="category navbarButton" placeholder="Add Category" onkeyup="createCategory(event)"></a>
         </div>
@@ -85,12 +92,6 @@
         </div>
     </div>
 
-
-    
-
-    
-
-   
 </body>
 
 

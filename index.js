@@ -146,6 +146,9 @@ app.get('/plannings', (req,res)=>{
           
         })
     }
+    else{
+        res.send("Not Logged In");
+    }
 
 })
 
@@ -206,8 +209,7 @@ app.get('/plannings/:date', (req,res) =>{
                             jsonOut.categories = categoriesOUT;
                             jsonOut.tasks = tasksOUT;
                             // TODO add dashboard DATA if we need it 
-                            console.log(JSON.stringify(jsonOut));
-                            res.send(jsonOut); // sending data from db
+                            res.send(JSON.stringify(jsonOut)); // sending data from db
                         })
         
                     })
@@ -216,12 +218,11 @@ app.get('/plannings/:date', (req,res) =>{
                 //ID in sqlResponse
             })
             
-           
-
         .catch((err) =>{throw (err)})
     }
-
-
+    else{
+        res.send("Not logged In, cannot access data");
+    }
 
 })
     

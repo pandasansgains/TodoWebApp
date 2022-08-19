@@ -1,5 +1,5 @@
 
-var lastSavedPlan = {"categories":[{"tasks":[{"taskDescription":"task1","note":"note 1"},{"taskDescription":"task2","note":""}],"categoryName":"Cat1"},{"tasks":[{"taskDescription":"nnn","note":"no text"}],"categoryName":"cat2"}],"date":"2022-08-31"};
+var lastSavedPlan = {"categories":[{"categoryName":"c1","categoryID":1,"dashboardId":1},{"categoryName":"c2","categoryID":2,"dashboardId":1},{"categoryName":"c3","categoryID":3,"dashboardId":1}],"tasks":[[{"description":"note 1\n","title":"t1","categoryId":1},{"description":"note 2","title":"t2","categoryId":1}],[{"description":"","title":"t1","categoryId":2},{"description":"","title":"t2","categoryId":2}],[]]};
 
 
 // generates a JSON object based on a dashboard
@@ -44,6 +44,8 @@ function saveDashboard(){
     // TODO save it to backend . For now save in lastSavedPlan
 }
 
+
+
 function logout(){
 
     var xmlRequest = new XMLHttpRequest();
@@ -56,6 +58,59 @@ function logout(){
             location.reload(true);// refresh page
         }
     }
+    xmlRequest.send();
+
+}
+
+// placeHolder is the div that holds all the potential plannings in format dd/... ( dropdown-content)
+function getPlannings(placeHolder){
+
+    var xmlRequest = new XMLHttpRequest();
+
+    xmlRequest.onreadystatechange = function(){
+        if (xmlRequest.readyState == 4 && xmlRequest.status == 200) { // succesfull
+
+            // plannings are received
+    
+
+            let jsonData = JSON.parse(xmlRequest.responseText);
+
+            generateDropDown(jsonData, placeHolder);
+
+            //[{"date":"2022-08-01"},{"date":"2022-08-06"}] response text
+    
+        }
+    }
+
+    xmlRequest.open("get","/plannings", true);
+    xmlRequest.send();
+
+}
+
+// function called in onclick of links with date calls loadDashboard
+function getPlanning(date){
+
+    console.log("CALLLLLLED");
+
+    var xmlRequest = new XMLHttpRequest();
+
+    xmlRequest.onreadystatechange = function(){
+        if (xmlRequest.readyState == 4 && xmlRequest.status == 200) { // succesfull
+
+            // plannings are received
+    
+
+            let jsonData = JSON.parse(xmlRequest.responseText);
+
+            // when received loadDahsboard
+            loadDashboard(jsonData);
+
+           
+    
+        }
+    }
+
+    xmlRequest.open("get","/plannings/" + date, true);
     xmlRequest.send();
 
 }
@@ -97,30 +152,43 @@ function saveTasks(taskPlaceHolder){
     return jsonTasks;
 }
 
-function loadDashboard(jsonTasks){
+
+//TODO replace loadDashboard
+function loadDashboard(dashboardData){
     // will be given a date as input and then fetch the dashboard from backend
 
 
-    console.log(lastSavedPlan);
+    let data = dashboardData;
 
-    let data = lastSavedPlan;
+
+    let map = new Map();// map catId -> categoryContainer
 
     Object.entries(data.categories).forEach((catObj)=>{// iterate over each category
 
         console.log(catObj);
+
+        var containerID = catObj[1].categoryID;// categoryID to attach the tasks
         var container = createContainer(catObj[1].categoryName);
 
-        Object.entries(catObj[1].tasks).forEach((taskObj)=>{
+        //TODO fix this  (DATA is represented differently than before ex: from backend :)
+
+        map.set(containerID, container);
+
+    })
 
 
-            //console.log(container);
+    Object.entries(data.tasks).forEach((taskList)=>{// tasks
 
-            console.log(taskObj[1].note)
+        console.log(taskList);
 
-            createTask(container, taskObj[1].taskDescription, taskObj[1].note);
+        Object.entries(taskList[1]).forEach((task) =>{
+
+            console.log(task[1]);
+
+            createTask(map.get(task[1].categoryId) , task[1].title, task[1].description);
 
         })
-
+        
     })
 
 }

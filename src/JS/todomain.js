@@ -65,6 +65,7 @@ function initDraggable(element){
 
 }
 
+//returns the container that it created
 function createContainer(categoryName){
 
     //create a taskPlaceHolder
@@ -267,8 +268,17 @@ function processInput(event){
 function loadForm(form){
     //TODO implement load form display the dropDonw as block
 
+    // let dropContent = form.nextElementSibling;
 
+    // //TODO refresh the call to backend
+    // if(dropContent.style.display === "block"){
 
+    //     dropContent.style.display = "none";
+
+    // }
+    // else{
+    //     dropContent.style.display = "block";
+    // }
 
 }
 
@@ -300,6 +310,39 @@ function setNote(){
     let textAreaValue = document.getElementById("popupNote").value;
 
     currentTask.setAttribute('data-note', textAreaValue);
+
+}
+
+function generateDropDown(response , placeHolder){
+
+
+    //clear to avoid duplicates
+    placeHolder.innerHTML = "";
+
+
+    let data = response;
+
+    Object.entries(data).forEach( date => {
+
+
+
+        let link = document.createElement("a");
+        link.innerHTML = date[1].date;
+
+
+
+        link.onclick = function(){
+            getPlanning(date[1].date);
+        }
+
+        
+        placeHolder.appendChild(link);
+
+
+    })
+
+
+    
 
 }
 
