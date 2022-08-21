@@ -90,7 +90,6 @@ function getPlannings(placeHolder){
 // function called in onclick of links with date calls loadDashboard
 function getPlanning(date){
 
-    console.log("CALLLLLLED");
 
     var xmlRequest = new XMLHttpRequest();
 

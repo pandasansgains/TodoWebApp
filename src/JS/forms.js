@@ -2,10 +2,8 @@ function openSaveForm(){
 
     //form to chose date when we save 
     // give error for saving when not logged in
-
-
+    
     document.getElementById("savePopup").style.display = "block";
-
 
 }
 

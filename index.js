@@ -124,11 +124,6 @@ app.post('/logout',function(req,res){
 })
 
 
-
-
-
-
-
 //LOAD DATES OF ALL PLANNINGS IF LOGGED IN
 app.get('/plannings', (req,res)=>{
 
@@ -178,8 +173,6 @@ app.get('/plannings/:date', (req,res) =>{
             
                 if(sqlResponse[0] != undefined){
                    dashboardId = sqlResponse[0].dashboardId;
-                  
-                 
                 }
                 getCategories(dashboardId)
                     .then((categorySqlResponse) => {
@@ -227,7 +220,6 @@ app.get('/plannings/:date', (req,res) =>{
 })
     
 
-
 // SAVE A PLANNING
 app.post('/planning', (req, res) => {
 
@@ -239,8 +231,10 @@ app.post('/planning', (req, res) => {
  
     if(req.session.loggedin){ // session is active
 
-        handleDashBoard(username,date,categories);// saves to the DB sequentially
-        res.send("saved to backend");
+
+        // Add sqlStatement to delete before 
+
+        handleDashBoard(username,date,categories);
 
     }
     else{
@@ -248,21 +242,37 @@ app.post('/planning', (req, res) => {
     }
 })
 
+function verifyDate(user,date){
 
+    return new Promise((resolve,reject) =>{ connection.query("INSERT INTO todoapp.dashboard (user,date) VALUES (?,?); SELECT LAST_INSERT_ID()",[user,date], function(err,sqlResponse){// response from DB
+
+        if (err) {
+            reject(err);
+        }
+        resolve(sqlResponse);// here the value is undefined
+        // if no error successfully inserted
+        // if error (either wrong datatype or user does not exist)
+    })
+})
+
+}
 
 function insertDashboard(user,date){
 
-    return new Promise(( resolve,reject) =>{ connection.query("INSERT INTO todoapp.dashboard (user,date) VALUES (?,?); SELECT LAST_INSERT_ID()",[user,date], function(err,sqlResponse){// response from DB
+    //TODO delete dashboard first then insert
+    return new Promise(( resolve,reject) =>{ connection.query("REPLACE INTO todoapp.dashboard (user,date) values (?, ?); SELECT LAST_INSERT_ID()",[user,date], function(err,sqlResponse){// response from DB
 
             if (err) {
                 reject(err);
             }
-            resolve(sqlResponse);// here the value is undefined
+            resolve(sqlResponse);
             // if no error successfully inserted
             // if error (either wrong datatype or user does not exist)
         })
     })
 }
+
+
 
 function insertCategory(dashboardID, categoryName){
 
@@ -320,23 +330,27 @@ function handleDashBoard(user, date, categories){
                             let taskDescription = task[1].taskDescription;
                             let taskNote = task[1].note;
 
-                            insertTask(taskNote,taskDescription,categoryID);            
+                            insertTask(taskNote,taskDescription,categoryID);  
+                            
+                            
                         })
+
+                        return "SUCCESSFULLY INSERTED";
 
                     })
                     .catch(err=>{
-                        throw(err);
+                        console.log("err2")
+                        return "CANNOT INSERT";
                     });
             })
 
         })
         .catch(err=>{
-            throw(err);
+            console.log("err1")
+            // there is a duplicate date
+            return "CANNOT INSERT";
         });
-  
-
-
-
+ 
 }
 
 
