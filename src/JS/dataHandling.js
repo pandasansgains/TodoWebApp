@@ -157,14 +157,17 @@ function loadDashboard(dashboardData){
     // will be given a date as input and then fetch the dashboard from backend
 
 
+    // clear dashboard first
+
+    document.getElementById("TaskListWrapper").innerHTML ="";
+
+    // set current dashboard to date
+
     let data = dashboardData;
-
-
     let map = new Map();// map catId -> categoryContainer
 
     Object.entries(data.categories).forEach((catObj)=>{// iterate over each category
 
-        console.log(catObj);
 
         var containerID = catObj[1].categoryID;// categoryID to attach the tasks
         var container = createContainer(catObj[1].categoryName);
@@ -178,11 +181,9 @@ function loadDashboard(dashboardData){
 
     Object.entries(data.tasks).forEach((taskList)=>{// tasks
 
-        console.log(taskList);
 
         Object.entries(taskList[1]).forEach((task) =>{
 
-            console.log(task[1]);
 
             createTask(map.get(task[1].categoryId) , task[1].title, task[1].description);
 

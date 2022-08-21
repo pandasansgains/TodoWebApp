@@ -32,6 +32,7 @@
 
   
   .dropdown-content {
+    z-index: 10;
     display: none;
     position: absolute;
     background-color: #f1f1f1;

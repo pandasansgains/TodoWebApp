@@ -1,10 +1,5 @@
 
 
-//TODO handle errors in backend . Make it such that we can't create dublicate categories.
-
-
-
-
 const express = require('express');
 const mysql = require('mysql'); // mysql library
 const path = require('path')
@@ -272,8 +267,6 @@ function insertDashboard(user,date){
     })
 }
 
-
-
 function insertCategory(dashboardID, categoryName){
 
     return new Promise((resolve, reject) =>  connection.query("INSERT INTO todoapp.category (categoryName,dashboardId) VALUES (?,?); SELECT LAST_INSERT_ID()  ",[categoryName,dashboardID], function(err,sqlResponse){// response from DB
@@ -320,8 +313,6 @@ function handleDashBoard(user, date, categories){
                 insertCategory(dashboardID, categoryname)
                     .then(sqlResponse =>{
 
-                        console.log(sqlResponse + "RES2");
-
                         let categoryID = sqlResponse[0].insertId;
 
                         Object.entries(tasks).forEach((task) =>{
@@ -335,25 +326,18 @@ function handleDashBoard(user, date, categories){
                             
                         })
 
-                        return "SUCCESSFULLY INSERTED";
-
                     })
                     .catch(err=>{
-                        console.log("err2")
-                        return "CANNOT INSERT";
+                        console.log(err)
                     });
             })
 
         })
         .catch(err=>{
-            console.log("err1")
-            // there is a duplicate date
-            return "CANNOT INSERT";
+            console.log(err)
         });
  
 }
-
-
 
 // PROMISE RETURNS 1 dashboard ID
 function getDashboardId(date, username){
@@ -392,38 +376,3 @@ function getTasks(categoryID){
      
     })})
 }
-
-
-
-
-
-
-
-
-
-app.get('/product/:id' , (req, res) => {// response we send as get
-    const { id } = req.params;
-        // connection.escape is the prepared statement
-        connection.query("SELECT * from webstore.product p WHERE p.productid ="+ connection.escape(id) , function(err,response){// response from DB
-    
-            if(err) throw err;
-
-            res.setHeader('Content-Type', 'application/json');
-            res.write(JSON.stringify(response));
-            res.send();
-            
-        })
-});    
-
-app.post('/tshirt/:id', (req,res) => {
-    const { id } = req.params;
-    const { logo } = req.body;
-
-    if(!logo){
-        res.status(418).send({ message: 'We need a logo!' })
-    }
-    res.send({
-        tshirt: `tshirt with your ${logo} and ID of ${id} `,
-    })
-
-})

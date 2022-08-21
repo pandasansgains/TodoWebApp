@@ -27,6 +27,20 @@ function showForm(listelem) { // timeForm for task elements
     form.style.display = "block";
     textArea.style.display = "block";
 
+
+    console.log(textArea.value);
+
+    if(textArea.value === ""){
+
+        let text = "";
+
+        for(let i = 0; i < 18; i++ ){// let 
+
+            text += "\n";
+        }
+        textArea.value = text;
+    }
+
     currentTask = listelem;// setting reference to currentTask for the submit of the note
 }
   

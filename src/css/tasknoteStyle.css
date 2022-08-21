@@ -1,0 +1,29 @@
+#popupTask {
+    display: none;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index: 10;
+    width: 400px;
+    height: 600px;
+    cursor: pointer;
+    background-color: grey;
+  }
+
+#popupNote{
+    margin: 0 auto;
+    box-sizing: border-box;
+    resize: none;
+    width: 95%;
+    height: 70%;
+    background-attachment: local;
+    background-image:
+        linear-gradient(to right, white 10px, transparent 10px),
+        linear-gradient(to left, white 10px, transparent 10px),
+        repeating-linear-gradient(white, white 21px, #ccc 22px, black 23px, #ccc 24px);
+
+    line-height: 24px;
+     
+
+}

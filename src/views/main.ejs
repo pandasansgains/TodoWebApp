@@ -8,6 +8,7 @@
     <link rel='stylesheet' type ="text/css" href='../css/todomainStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/navbarStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/popupFormsStyle.css'>
+    <link rel='stylesheet' type ="text/css" href='../css/tasknoteStyle.css'>
 
     <header>     
         
@@ -72,24 +73,26 @@
 <body>
 
     <div id = "TaskListWrapper">
-        <div id="popupTask">
-            <form id = "popupForm">
-                <span class = "closeButton" onclick = "closeNoteForm(this)">&times;</span>
-                <label for="taskName"> taskname: </label>
-                <p id = "taskName" class = "form"></p>
-            </form>
-            <textarea type="text" id="popupNote"> </textarea>
-            <button type = "submit" onclick="setNote()"> submit</button>
-        </div>
+    
+    </div>
 
-        <div id="savePopup">
-            <form id = "savePopupForm">
-                <span class = "closeButton" onclick = "closeTheForm(this)">&times;</span>
-                <label for="selectDate"> Select Date: </label>
-                <input type = "date" id = "selectDate">
-            </form>
-            <button type = "submit" onclick="saveDashboard()"> submit</button>
-        </div>
+    <div id="popupTask">
+        <form id = "popupForm">
+            <span class = "closeButton" onclick = "closeNoteForm(this)">&times;</span>
+            <label for="taskName"> taskname: </label>
+            <p id = "taskName" class = "form"></p>
+        </form>
+        <textarea type="text" id="popupNote"> </textarea>
+        <button type = "submit" onclick="setNote()"  > submit</button>
+    </div>
+
+    <div id="savePopup">
+        <form id = "savePopupForm">
+            <span class = "closeButton" onclick = "closeTheForm(this)">&times;</span>
+            <label for="selectDate"> Select Date: </label>
+            <input type = "date" id = "selectDate">
+        </form>
+        <button type = "submit" onclick="saveDashboard()"> submit</button>
     </div>
 
 </body>
