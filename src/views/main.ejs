@@ -9,6 +9,7 @@
     <link rel='stylesheet' type ="text/css" href='../css/navbarStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/popupFormsStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/tasknoteStyle.css'>
+    <link rel='stylesheet' type ="text/css" href='../css/genericStyles.css'>
 
     <header>     
         
@@ -79,11 +80,15 @@
     <div id="popupTask">
         <form id = "popupForm">
             <span class = "closeButton" onclick = "closeNoteForm(this)">&times;</span>
-            <label for="taskName"> taskname: </label>
-            <p id = "taskName" class = "form"></p>
+           
+            <div class = "centerDiv font" id = "taskName">
+            </div>
+
         </form>
         <textarea type="text" id="popupNote"> </textarea>
-        <button type = "submit" onclick="setNote()"  > submit</button>
+        <div id ="submitNote" class = "centerDiv">
+            <button  type = "submit" onclick="setNote()"  > </button>
+        </div>
     </div>
 
     <div id="savePopup">

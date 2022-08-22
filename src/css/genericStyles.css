@@ -1,0 +1,77 @@
+
+.centerDiv{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+.closeButtonCategory{
+
+    background-color: rgb(205, 67, 67);
+    margin-right: 20px ;
+    margin-top: 2px;
+    float: right;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    border: rgb(9, 9, 9);
+    border-width: 3px;
+    font-family: none;
+    cursor: pointer;
+
+  }
+
+.closeButton{
+
+    background-color: rgb(205, 67, 67);
+    float: right;
+    width: 30px;
+    height: auto;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    border: rgb(9, 9, 9);
+    border-width: 3px;
+    cursor: pointer;
+
+  }
+  
+  .done{
+      font-family: "Anton";
+      text-decoration: line-through;
+  }
+  
+  .delete{
+     float: right;
+    }
+  
+  .addTime{
+      
+     float: right;
+      
+  }
+  
+  .font{
+      
+      font-family: "Anton";
+      
+  }
+  
+  .draggable{
+
+      cursor: grab;
+  }
+  
+  .draggable.dragging{
+      
+      opacity: .5;
+  }
+  
+  

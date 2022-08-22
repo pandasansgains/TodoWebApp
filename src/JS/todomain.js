@@ -156,7 +156,7 @@ function createTask(container, taskName, note){
 
 
     var span = document.createElement('span');
-    span.classList.add('content');
+    span.classList.add('font');
     span.innerHTML = taskName;
  
 

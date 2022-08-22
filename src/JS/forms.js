@@ -14,7 +14,7 @@ function showForm(listelem) { // timeForm for task elements
     var textArea = document.getElementById("popupNote");
     var taskNameForm = document.getElementById("taskName");
 
-    var taskName = listelem.querySelector('.content').innerHTML;// accessing name of the task
+    var taskName = listelem.querySelector('.font').innerHTML;// accessing name of the task
     var noteData = listelem.getAttribute('data-note');// data of the note
 
     // we need to set a ref to the listElem we clicked
