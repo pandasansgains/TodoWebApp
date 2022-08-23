@@ -11,6 +11,12 @@
     <link rel='stylesheet' type ="text/css" href='../css/tasknoteStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/genericStyles.css'>
 
+
+    <link rel='stylesheet' type ="text/css" href='../assets/CalendarPickerJS-master/CalendarPicker.style.css'>
+    <script src="../assets/CalendarPickerJS-master/CalendarPicker.js" type = "text/javascript" defer></script> 
+    <script src="../JS/calendarHandler.js" type = "text/javascript" defer></script>
+
+
     <header>     
         
         <div>
@@ -98,6 +104,14 @@
             <input type = "date" id = "selectDate">
         </form>
         <button type = "submit" onclick="saveDashboard()"> submit</button>
+    </div>
+
+
+    <div id = "myCalendarWrapper">
+
+
+        <button type = "submit" onclick="submit()"> submit</button>
+
     </div>
 
 </body>

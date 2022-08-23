@@ -346,6 +346,8 @@ function generateDropDown(response , placeHolder){
 
 }
 
+
+
 displayClockTime();
 
 

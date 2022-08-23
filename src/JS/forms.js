@@ -34,7 +34,7 @@ function showForm(listelem) { // timeForm for task elements
 
         let text = "";
 
-        for(let i = 0; i < 18; i++ ){// let 
+        for(let i = 0; i < 18; i++ ){// amount of visible lines until next /n
 
             text += "\n";
         }
