@@ -1,15 +1,17 @@
 
 
+// TODO
 
+// Open calendar only if logged in  
+// Style calendar and display it on top of other stuff
+// make calendar close when we press submit
 
 const myCalender = new CalendarPicker('#myCalendarWrapper', {
 
     // options here
     // add onclick event to navigationWrapper
 
-  
 });
-
 
 
 document.getElementById("previous-month").onclick = function(){
@@ -21,6 +23,26 @@ document.getElementById("previous-month").onclick = function(){
 document.getElementById("next-month").onclick = function(){
 
   colorCalendarDelayed();
+
+}
+
+
+
+function openCalendar(){
+
+    //form to chose date when we save 
+    // give error for saving when not logged in
+    
+
+    document.getElementById("myCalendarWrapper").style.display = "block";
+
+    colorCalendarDelayed();
+}
+
+
+function closeCalendar(){
+
+    document.getElementById("myCalendarWrapper").style.display = "none";
 
 }
 
@@ -82,15 +104,11 @@ function dateConverter(day, month, year){
  * @param {Array} dateArrays an array of dates where a dashboard is saved 
  * 
  */
-function colorDaysCalendar(dateArray){ // we do not use value of calendar as it is value of selected date
+function colorDaysCalendar(){ // we do not use value of calendar as it is value of selected date
 
-    console.log("called");
-    // could organise data in maps for mor scalability but for now we'll just use a for loop as we will in the future ignore/delete dashboards that are before today's date or a week ago
-
-    var sampleData = [{"date":"2022-08-01"},{"date":"2022-08-04"},{"date":"2022-08-06"},{"date":"2022-08-17"},{"date":"2022-09-02"}]
 
     // data format {"date":"2022-08-01"}
-    sampleData.forEach(element =>{
+    availablePlannings.forEach(element =>{
 
         colorElementDay(element.date);
     
@@ -147,18 +165,3 @@ function monthToNumeral(monthName){
     return monthToNumerals.get(monthName.toLowerCase()); 
 
 }
-
-
-// make function that converts it back
-
-//SELECT all days in id="calendar-grid"
-
-// all real days have a value
-
-// Select current month and year in the header
-
-// add onclick event to navigation wrapper to Style the days
-
-// add onclick event when also displaying the calendar ( setting visibility to none or block)
-
-// add a today button

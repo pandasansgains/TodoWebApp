@@ -1,18 +1,20 @@
 
-var lastSavedPlan = {"categories":[{"categoryName":"c1","categoryID":1,"dashboardId":1},{"categoryName":"c2","categoryID":2,"dashboardId":1},{"categoryName":"c3","categoryID":3,"dashboardId":1}],"tasks":[[{"description":"note 1\n","title":"t1","categoryId":1},{"description":"note 2","title":"t2","categoryId":1}],[{"description":"","title":"t1","categoryId":2},{"description":"","title":"t2","categoryId":2}],[]]};
 
+var availablePlannings = null;// available plannings if logged in 
 
 // generates a JSON object based on a dashboard
 
 
 function saveDashboard(){
 
-    let datePicker = document.getElementById("selectDate");
-    let date = datePicker.value;
+
+    let dateObj = myCalender.value;
+    let dateString = dateConverter(dateObj.getDate(), dateObj.getMonth(), dateObj.getFullYear());
+
     // TODO add date to JSOn object
     let output = {};
     output.categories = [];
-    output.date = date;
+    output.date = dateString;
 
     let taskHolders = document.getElementsByClassName("taskPlaceHolder");
 
@@ -22,7 +24,6 @@ function saveDashboard(){
         
     }
     console.log(JSON.stringify(output));
-    lastSavedPlan = JSON.stringify(output);// set it so we can try and laod the dashboard
 
 
 
@@ -36,12 +37,8 @@ function saveDashboard(){
         }
     }
 
-    // TODO change to output after when done testing
     xmlRequest.send(JSON.stringify(output));
 
-    // 
-
-    // TODO save it to backend . For now save in lastSavedPlan
 }
 
 
@@ -75,6 +72,7 @@ function getPlannings(placeHolder){
 
             let jsonData = JSON.parse(xmlRequest.responseText);
 
+            availablePlannings = jsonData;
             generateDropDown(jsonData, placeHolder);
 
             //[{"date":"2022-08-01"},{"date":"2022-08-06"}] response text

@@ -335,9 +335,8 @@ function generateDropDown(response , placeHolder){
             getPlanning(date[1].date);
         }
 
-        
+    
         placeHolder.appendChild(link);
-
 
     })
 

@@ -131,9 +131,15 @@
 
   }
 
+
+
+
+
   #myCalendarWrapper{
     background-color: white;
     width: 50%;
+    display: none;
+    z-index: 15;
   }
 
 

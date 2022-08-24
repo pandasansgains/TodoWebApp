@@ -50,7 +50,7 @@
 
             </div>
 
-            <div class = "inlineNav" onclick = "openSaveForm()">
+            <div class = "inlineNav" onclick = "openCalendar()">
                 <a  class = "navButton" >Save Planning  </a>
             </div>
 
@@ -97,20 +97,12 @@
         </div>
     </div>
 
-    <div id="savePopup">
-        <form id = "savePopupForm">
-            <span class = "closeButton" onclick = "closeTheForm(this)">&times;</span>
-            <label for="selectDate"> Select Date: </label>
-            <input type = "date" id = "selectDate">
-        </form>
-        <button type = "submit" onclick="saveDashboard()"> submit</button>
-    </div>
 
 
     <div id = "myCalendarWrapper">
 
-
-        <button type = "submit" onclick="submit()"> submit</button>
+        <button type = "submit" onclick="saveDashboard()"> submit</button>
+        <button type = "submit" onclick="closeCalendar()"> close</button>
 
     </div>
 
