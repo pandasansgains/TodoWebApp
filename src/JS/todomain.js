@@ -21,6 +21,7 @@
 // or we could approach the problem storing all the data within the div there seem to be a solution like data-* = 
 // The data would be saved according to a day and a user and we will just overwrite. this way when draggin and dropping it would not 
 //be that big of an issue  
+
 var categories = [];
 
 var currentTask = null; // current task being edited ( description or other ) from the popup menu
@@ -84,15 +85,17 @@ function createContainer(categoryName){
     var text = document.createTextNode(categoryName);
     span.appendChild(text);
 
-    var button = document.createElement('span');// adding closeButton
-    button.classList.add('closeButtonCategory');
-    button.innerHTML= "&times;"
-    button.onclick =function(){
 
+    var closeButton = document.createElement('button');// adding closeButton
+    closeButton.classList.add('close');
+
+
+
+    closeButton.onclick = function(){
         deleteCategory(this);
     }
 
-    span.appendChild(button);
+    span.appendChild(closeButton);
     ul.appendChild(span);
    
     
@@ -145,14 +148,12 @@ function createTask(container, taskName, note){
     }
 
 
-    var button = document.createElement('span');
-    button.classList.add('closeButton');
-    button.innerHTML= "&times;"
-    button.onclick =function(){
-
+    var closeButton = document.createElement('button');// adding closeButton
+    closeButton.classList.add('close');
+    closeButton.onclick = function(){
         deleteElem(this);
     }
-    
+
 
 
     var span = document.createElement('span');
@@ -161,7 +162,7 @@ function createTask(container, taskName, note){
  
 
     listElem.appendChild(span);
-    listElem.appendChild(button);
+    listElem.appendChild(closeButton);
 
     if(note === null){
         listElem.setAttribute("data-note", "");
@@ -313,37 +314,74 @@ function setNote(){
 
 }
 
-function generateDropDown(response , placeHolder){
+// function generateDropDown(response , placeHolder){
+
+
+//     //clear to avoid duplicates
+//     placeHolder.innerHTML = "";
+
+
+//     let data = response;
+
+//     Object.entries(data).forEach( date => {
+
+
+
+//         let link = document.createElement("a");
+//         link.innerHTML = date[1].date;
+
+
+
+//         link.onclick = function(){
+//             getPlanning(date[1].date);
+//         }
+
+    
+//         placeHolder.appendChild(link);
+
+//     })
+
+
+// }
+
+
+function generateDropDown(placeHolder){
 
 
     //clear to avoid duplicates
     placeHolder.innerHTML = "";
 
 
-    let data = response;
-
-    Object.entries(data).forEach( date => {
+    let data = availablePlannings;
 
 
+    if(data !== null){
 
-        let link = document.createElement("a");
-        link.innerHTML = date[1].date;
+        Object.entries(data).forEach( date => {
 
 
 
-        link.onclick = function(){
-            getPlanning(date[1].date);
-        }
-
+            let link = document.createElement("a");
+            link.innerHTML = date[1].date;
     
-        placeHolder.appendChild(link);
-
-    })
-
-
     
+    
+            link.onclick = function(){
+                getPlanning(date[1].date);
+            }
+    
+        
+            placeHolder.appendChild(link);
+    
+        })
+
+    }
+
+   
+
 
 }
+
 
 
 

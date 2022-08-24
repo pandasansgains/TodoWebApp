@@ -92,6 +92,15 @@
   
   }
 
+  .task button{
+
+    margin-right: 3px;
+    float: right;
+    width: 25px;
+    height: 25px;
+
+  }
+
   .content{
 
     overflow: hidden;
@@ -132,14 +141,16 @@
   }
 
 
+  .categoryTitle button{
 
+    margin-right: 10px;
+    float: right;
+    width: 30px;
+    height: 30px;
 
-
-  #myCalendarWrapper{
-    background-color: white;
-    width: 50%;
-    display: none;
-    z-index: 15;
   }
+
+
+
 
 

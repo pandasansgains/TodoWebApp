@@ -10,6 +10,7 @@
     <link rel='stylesheet' type ="text/css" href='../css/popupFormsStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/tasknoteStyle.css'>
     <link rel='stylesheet' type ="text/css" href='../css/genericStyles.css'>
+    <link rel='stylesheet' type ="text/css" href='../css/calendarStyle.css'>
 
 
     <link rel='stylesheet' type ="text/css" href='../assets/CalendarPickerJS-master/CalendarPicker.style.css'>
@@ -44,13 +45,13 @@
 
             <div class="dropDown inlineNav">
 
-                <a  class = "navButton" onmouseover="getPlannings(this.nextElementSibling)" onclick = "loadDashboard(null)">  Load Planning  </a>
+                <a  class = "navButton" onmousemove="getPlannings(); generateDropDown(this.nextElementSibling)" onclick = "loadDashboard(null)">  Load Planning  </a>
                 <div class="dropdown-content">
                 </div>
 
             </div>
 
-            <div class = "inlineNav" onclick = "openCalendar()">
+            <div class = "inlineNav" onclick = "getPlannings(); openCalendar()">
                 <a  class = "navButton" >Save Planning  </a>
             </div>
 
@@ -93,7 +94,7 @@
         </form>
         <textarea type="text" id="popupNote"> </textarea>
         <div id ="submitNote" class = "centerDiv">
-            <button  type = "submit" onclick="setNote()"  > </button>
+            <button  class = "greenTick" type = "submit" onclick="setNote()"  > </button>
         </div>
     </div>
 
@@ -101,8 +102,8 @@
 
     <div id = "myCalendarWrapper">
 
-        <button type = "submit" onclick="saveDashboard()"> submit</button>
-        <button type = "submit" onclick="closeCalendar()"> close</button>
+        <button type = "submit" onclick="saveDashboard(); closeCalendar()"> submit</button>
+        <button type = "submit" class = "close" onclick="closeCalendar()"></button>
 
     </div>
 

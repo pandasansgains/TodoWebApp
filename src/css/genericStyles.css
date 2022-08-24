@@ -8,40 +8,46 @@
 }
 
 
-.closeButtonCategory{
+  .greenTick{
 
-    background-color: rgb(205, 67, 67);
-    margin-right: 20px ;
-    margin-top: 2px;
-    float: right;
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
-    text-align: center;
-    font-size: 25px;
-    font-weight: 600;
-    border: rgb(9, 9, 9);
-    border-width: 3px;
-    font-family: none;
-    cursor: pointer;
+    border: none;
+    background-image: url(../assets/greenTick.png);
+    background-size: 100%;
+    background-color: transparent;
+    border-radius: 25%;
+    cursor: pointer ;
+    
+  }
+
+  .greenTick:active{
+
+    transform: scale(0.95);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 
   }
 
-.closeButton{
+  .close{
 
-    background-color: rgb(205, 67, 67);
-    float: right;
-    width: 30px;
-    height: auto;
-    border-radius: 100%;
-    text-align: center;
-    font-size: 25px;
-    font-weight: 600;
-    border: rgb(9, 9, 9);
-    border-width: 3px;
-    cursor: pointer;
+    border: none;
+    background-image: url(../assets/redCross.png);
+    background-size: 100%;
+    background-color: transparent;
+    border-radius: 25%;
+    cursor: pointer ;
+
 
   }
+
+
+  .close:active{
+
+    transform: scale(0.95);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+
+  }
+
+
+
   
   .done{
       font-family: "Anton";
@@ -54,13 +60,13 @@
   
   .addTime{
       
-     float: right;
+    float: right;
       
   }
   
   .font{
       
-      font-family: "Anton";
+    font-family: "Anton";
       
   }
   

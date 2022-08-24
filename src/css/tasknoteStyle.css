@@ -41,14 +41,9 @@
 
 #submitNote button{
 
-    border: none;
     width: 30px;
     height: 30px;
-    background-image: url(../assets/greenTick.png);
-    background-size: 100%;
-    background-color: transparent;
-    border-radius: 25%;
-    
+
 }
 
 

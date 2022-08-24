@@ -2,7 +2,6 @@
 
 // TODO
 
-// Open calendar only if logged in  
 // Style calendar and display it on top of other stuff
 // make calendar close when we press submit
 
@@ -12,7 +11,6 @@ const myCalender = new CalendarPicker('#myCalendarWrapper', {
     // add onclick event to navigationWrapper
 
 });
-
 
 document.getElementById("previous-month").onclick = function(){
 
@@ -52,10 +50,6 @@ function colorCalendarDelayed(){
     setTimeout(colorDaysCalendar, 10);
 
 }
-
-
-
-
 
 
 
@@ -107,12 +101,18 @@ function dateConverter(day, month, year){
 function colorDaysCalendar(){ // we do not use value of calendar as it is value of selected date
 
 
-    // data format {"date":"2022-08-01"}
-    availablePlannings.forEach(element =>{
+    if(availablePlannings !== null){
 
-        colorElementDay(element.date);
-    
-    })
+        // data format {"date":"2022-08-01"}
+        availablePlannings.forEach(element =>{
+
+            colorElementDay(element.date);
+        
+        })
+
+    }
+
+ 
 
 }
 
@@ -132,7 +132,6 @@ function colorElementDay(date){
 
             let dateString = dateConverter(dateObj.getDate(), dateObj.getMonth(), dateObj.getFullYear());
 
-            console.log(dateString);
             if(dateString === date){
 
                 child.style.backgroundColor = "blue";

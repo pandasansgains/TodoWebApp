@@ -6,7 +6,7 @@ var availablePlannings = null;// available plannings if logged in
 
 
 function saveDashboard(){
-
+    // called when press submit of the calendar
 
     let dateObj = myCalender.value;
     let dateString = dateConverter(dateObj.getDate(), dateObj.getMonth(), dateObj.getFullYear());
@@ -59,8 +59,10 @@ function logout(){
 
 }
 
-// placeHolder is the div that holds all the potential plannings in format dd/... ( dropdown-content)
-function getPlannings(placeHolder){
+
+
+
+function getPlannings(){
 
     var xmlRequest = new XMLHttpRequest();
 
@@ -73,7 +75,7 @@ function getPlannings(placeHolder){
             let jsonData = JSON.parse(xmlRequest.responseText);
 
             availablePlannings = jsonData;
-            generateDropDown(jsonData, placeHolder);
+
 
             //[{"date":"2022-08-01"},{"date":"2022-08-06"}] response text
     
@@ -84,6 +86,7 @@ function getPlannings(placeHolder){
     xmlRequest.send();
 
 }
+
 
 // function called in onclick of links with date calls loadDashboard
 function getPlanning(date){
