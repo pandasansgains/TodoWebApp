@@ -24,7 +24,6 @@ function showForm(listelem) { // timeForm for task elements
     taskNameForm.innerHTML = taskName;
 
     div.style.display = "block";
-    form.style.display = "block";
     textArea.style.display = "block";
 
 
@@ -44,16 +43,17 @@ function showForm(listelem) { // timeForm for task elements
     currentTask = listelem;// setting reference to currentTask for the submit of the note
 }
   
-function closeNoteForm(button) {
+function closeNoteForm() {
+    console.log("called");
     
     var div = document.getElementById("popupTask");
+
     var taskNameForm = document.getElementById("taskName");
 
     // we need to set a ref to the listElem we clicked
-
     taskNameForm.innerHTML = "";
 
-    closeTheForm(button);
+    div.style.display ="none";
 
     currentTask = null;// setting reference to currentTask  
     
@@ -64,6 +64,8 @@ function closeTheForm(button){
    
     form = button.parentElement;
     div = form.parentElement;
+
+    console.log(div);
     div.style.display = "none";
 
 

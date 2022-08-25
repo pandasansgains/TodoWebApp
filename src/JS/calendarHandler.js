@@ -57,6 +57,7 @@ function setToday(){
 
     var today = new Date();
     myCalender._setDate(today.getFullYear(), today.getMonth());
+    colorCalendarDelayed();
 
 }
 
@@ -68,12 +69,19 @@ function submit(){
 }
 
 
-// converts 
-function dateConverter(day, month, year){
+
+
+
+// converts passing this.value
+function dateConverterObj(DateObj){
 
     let sDay;
     let sMonth;
     let sYear;
+
+    let day = DateObj.getDate();
+    let month= DateObj.getMonth();
+    let year = DateObj.getFullYear();
 
     if(day < 10){
         sDay = "0" + day;
@@ -100,6 +108,7 @@ function dateConverter(day, month, year){
  */
 function colorDaysCalendar(){ // we do not use value of calendar as it is value of selected date
 
+    clearDatesColor();
 
     if(availablePlannings !== null){
 
@@ -130,15 +139,38 @@ function colorElementDay(date){
 
         if(dateObj !== false){
 
-            let dateString = dateConverter(dateObj.getDate(), dateObj.getMonth(), dateObj.getFullYear());
+            let dateString = dateConverterObj(dateObj);
 
             if(dateString === date){
 
                 child.style.backgroundColor = "blue";
+                return true;
             }
+           
         }
     }
+    return false;// false if no objects have been found in current loaded
+                // page of calendar to have matching date
+  
 }
+
+
+
+function clearDatesColor(){
+
+    //date
+    //{"date":"2022-08-01"}
+
+    var dates = document.getElementById("calendar-grid").childNodes;// <list> childNodes
+
+    for( const child of dates){
+
+        child.style.backgroundColor = "white";
+        
+    }
+  
+}
+
 
 
 

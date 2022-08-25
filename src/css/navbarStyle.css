@@ -3,6 +3,7 @@
     background-color: #333;
     font-family: Arial;
     height: fit-content;
+   
   }
   .inlineNav{
     display: inline-block;
@@ -12,6 +13,7 @@
     padding: 1% 2%;
     text-decoration: none;
     height: 45px;
+    cursor: pointer;
   }
 
   .inlineNav:hover {

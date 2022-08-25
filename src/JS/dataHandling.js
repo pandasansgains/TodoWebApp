@@ -5,11 +5,14 @@ var availablePlannings = null;// available plannings if logged in
 // generates a JSON object based on a dashboard
 
 
-function saveDashboard(){
+function saveDashboard(date){
     // called when press submit of the calendar
 
-    let dateObj = myCalender.value;
-    let dateString = dateConverter(dateObj.getDate(), dateObj.getMonth(), dateObj.getFullYear());
+    // let dateObj = myCalender.value;
+    // let dateString = dateConverterObj(dateObj);
+
+
+    let dateString = date;
 
     // TODO add date to JSOn object
     let output = {};
@@ -26,19 +29,18 @@ function saveDashboard(){
     console.log(JSON.stringify(output));
 
 
-
     var xmlRequest = new XMLHttpRequest();
     xmlRequest.open("post","/planning", true);
     xmlRequest.setRequestHeader('content-type', 'application/json');
 
-    xmlRequest.onreadystatechange = function(){
+    xmlRequest.onreadystatechange = function(){// TODO investigate but never triggered as we do not send response seemingly
         if (xmlRequest.readyState == 4 && xmlRequest.status == 200) { // succesfull
             alert(xmlRequest.responseText);
+           
         }
     }
 
     xmlRequest.send(JSON.stringify(output));
-
 }
 
 
@@ -62,7 +64,7 @@ function logout(){
 
 
 
-function getPlannings(){
+function getPlannings(refreshCalendar){
 
     var xmlRequest = new XMLHttpRequest();
 
@@ -75,6 +77,11 @@ function getPlannings(){
             let jsonData = JSON.parse(xmlRequest.responseText);
 
             availablePlannings = jsonData;
+
+            if(refreshCalendar == true){
+                console.log("calling refresh");
+                colorCalendarDelayed();
+            }
 
 
             //[{"date":"2022-08-01"},{"date":"2022-08-06"}] response text
@@ -99,7 +106,6 @@ function getPlanning(date){
 
             // plannings are received
     
-
             let jsonData = JSON.parse(xmlRequest.responseText);
 
             // when received loadDahsboard
@@ -111,6 +117,29 @@ function getPlanning(date){
     }
 
     xmlRequest.open("get","/plannings/" + date, true);
+    xmlRequest.send();
+
+}
+
+
+function deletePlanning(date){
+
+    var xmlRequest = new XMLHttpRequest();
+
+    xmlRequest.onreadystatechange = function(){
+        if (xmlRequest.readyState == 4 && xmlRequest.status == 200) { // succesfull
+
+            // plannings are received
+    
+            alert("deleted");
+            // when done
+            colorCalendarDelayed();
+           
+    
+        }
+    }
+
+    xmlRequest.open("post","/plannings/" + date, true);
     xmlRequest.send();
 
 }
@@ -139,7 +168,7 @@ function saveTasks(taskPlaceHolder){
         if(tasks[i].classList.contains("task")){
 
             let jsonTask = {};
-            let content = tasks[i].querySelector(".content");
+            let content = tasks[i].querySelector(".font");
             let note = tasks[i].getAttribute("data-note");
 
             jsonTask.taskDescription = content.textContent;

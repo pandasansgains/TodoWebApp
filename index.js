@@ -213,6 +213,23 @@ app.get('/plannings/:date', (req,res) =>{
     }
 
 })
+
+
+
+// DELETE A DASHBOARD
+app.post('/plannings/:date', (req,res) =>{
+
+    let username = req.session.username;
+    const {date} = req.params;
+
+    if(req.session.loggedin){
+
+        //deleteDashboard()
+
+        deleteDashboard(date,username);
+    }
+
+})
     
 
 // SAVE A PLANNING
@@ -226,9 +243,6 @@ app.post('/planning', (req, res) => {
  
     if(req.session.loggedin){ // session is active
 
-
-        // Add sqlStatement to delete before 
-
         handleDashBoard(username,date,categories);
 
     }
@@ -237,20 +251,6 @@ app.post('/planning', (req, res) => {
     }
 })
 
-function verifyDate(user,date){
-
-    return new Promise((resolve,reject) =>{ connection.query("INSERT INTO todoapp.dashboard (user,date) VALUES (?,?); SELECT LAST_INSERT_ID()",[user,date], function(err,sqlResponse){// response from DB
-
-        if (err) {
-            reject(err);
-        }
-        resolve(sqlResponse);// here the value is undefined
-        // if no error successfully inserted
-        // if error (either wrong datatype or user does not exist)
-    })
-})
-
-}
 
 function insertDashboard(user,date){
 
@@ -352,6 +352,32 @@ function getDashboardId(date, username){
     })
 }
 
+
+// DELETES A DASHBOARD FOR DATE USERNAME
+function deleteDashboard(date, username){
+
+    connection.query("DELETE FROM todoapp.dashboard d WHERE d.date = ? and d.user = ?",[date,username], function(err,sqlResponse){// response from DB
+       
+       if(err){
+        throw err;
+       }
+       console.log("DELETED")
+     
+    })
+
+    // connection.query("INSERT INTO todoapp.task (description,title,categoryID) VALUES (?,?,?) ",[description,title,categoryID], function(err,sqlResponse){// response from DB
+    //     if (err) {
+
+    //         console.log("Error inserting task");
+        
+    //         console.log(err);
+    //         return null;
+    //     };
+    //     // if no error successfully inserted
+    //     // if error (either wrong datatype or user does not exist)
+    // })
+}
+
 // RETURNS ALL CATEGORIES ASSOCIATED TO 1 DASHBOARD
 function getCategories(dashboardID){
 
@@ -376,3 +402,5 @@ function getTasks(categoryID){
      
     })})
 }
+
+

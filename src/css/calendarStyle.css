@@ -20,3 +20,13 @@
     margin-right: 15px;
 
   }
+
+  .calNavbar{
+    position: fixed;
+    bottom: 0;
+  }
+
+  .calNavbar div{
+    display: inline-block;
+  }
+  

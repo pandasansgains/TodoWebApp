@@ -266,22 +266,55 @@ function processInput(event){
     } 
 }
 
-function loadForm(form){
-    //TODO implement load form display the dropDonw as block
+// function called in onclick of links with date calls loadDashboard
+function loadPlanningFront(){
 
-    // let dropContent = form.nextElementSibling;
 
-    // //TODO refresh the call to backend
-    // if(dropContent.style.display === "block"){
+    console.log(myCalender.value);
 
-    //     dropContent.style.display = "none";
+    if(myCalender.value!== null){
 
-    // }
-    // else{
-    //     dropContent.style.display = "block";
-    // }
+        let dateString =dateConverterObj(myCalender.value);
+        getPlanning(dateString);// call to backend
+
+    }
 
 }
+
+
+// function called in onclick of links with date calls deleteDashboard
+function deletePlanningFront(){
+
+    console.log(myCalender.value);
+
+    if(myCalender.value!== null){
+
+        let dateString =dateConverterObj(myCalender.value);
+        deletePlanning(dateString);// call to backend to delete
+        // update available plannings
+        getPlannings(true);// update available plannings
+
+    }
+
+}
+
+
+// function called in onclick of links with date calls deleteDashboard
+function savePlanningFront(){
+
+    console.log(myCalender.value);
+
+    if(myCalender.value!== null){
+
+        let dateString = dateConverterObj(myCalender.value);
+        saveDashboard(dateString);
+        // update available plannings
+        getPlannings(true);// update available plannings
+
+    }
+
+}
+
 
 
 
@@ -294,9 +327,8 @@ function displayClockTime(){
     
     
     var x = new Date()
-    //console.log(x.getYear());
 
-    document.getElementById('Date').innerHTML = x.getMonth() + "/" + x.getDate() + "/" + x.getFullYear();
+    document.getElementById('Date').innerHTML =  x.getDate() + "/" +  (x.getMonth()+1) + "/" + x.getFullYear();
     document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() +"m ";
     displayClock();
     
@@ -314,73 +346,7 @@ function setNote(){
 
 }
 
-// function generateDropDown(response , placeHolder){
 
-
-//     //clear to avoid duplicates
-//     placeHolder.innerHTML = "";
-
-
-//     let data = response;
-
-//     Object.entries(data).forEach( date => {
-
-
-
-//         let link = document.createElement("a");
-//         link.innerHTML = date[1].date;
-
-
-
-//         link.onclick = function(){
-//             getPlanning(date[1].date);
-//         }
-
-    
-//         placeHolder.appendChild(link);
-
-//     })
-
-
-// }
-
-
-function generateDropDown(placeHolder){
-
-
-    //clear to avoid duplicates
-    placeHolder.innerHTML = "";
-
-
-    let data = availablePlannings;
-
-
-    if(data !== null){
-
-        Object.entries(data).forEach( date => {
-
-
-
-            let link = document.createElement("a");
-            link.innerHTML = date[1].date;
-    
-    
-    
-            link.onclick = function(){
-                getPlanning(date[1].date);
-            }
-    
-        
-            placeHolder.appendChild(link);
-    
-        })
-
-    }
-
-   
-
-
-}
 
 
 

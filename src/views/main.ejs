@@ -43,16 +43,17 @@
 
         <div class = "navbar">
 
+            <!--
             <div class="dropDown inlineNav">
 
-                <a  class = "navButton" onmousemove="getPlannings(); generateDropDown(this.nextElementSibling)" onclick = "loadDashboard(null)">  Load Planning  </a>
+                <a  class = "navButton" onmousemove="" onclick = "loadDashboard(null)">  Load Planning  </a>
                 <div class="dropdown-content">
                 </div>
 
-            </div>
+            </div>-->
 
             <div class = "inlineNav" onclick = "getPlannings(); openCalendar()">
-                <a  class = "navButton" >Save Planning  </a>
+                <a  class = "navButton" >Open Calendar</a>
             </div>
 
             <div  class = "inlineNav">
@@ -85,14 +86,15 @@
     </div>
 
     <div id="popupTask">
-        <form id = "popupForm">
-            <span class = "closeButton" onclick = "closeNoteForm(this)">&times;</span>
-           
-            <div class = "centerDiv font" id = "taskName">
-            </div>
 
-        </form>
-        <textarea type="text" id="popupNote"> </textarea>
+        <button type = "submit"  class = "close" onclick = "closeNoteForm()"></button>
+        <div class = "centerDiv font" id = "taskName"></div>
+
+        <div >
+            <textarea type="text" id="popupNote"> </textarea>
+
+        </div>
+
         <div id ="submitNote" class = "centerDiv">
             <button  class = "greenTick" type = "submit" onclick="setNote()"  > </button>
         </div>
@@ -102,8 +104,37 @@
 
     <div id = "myCalendarWrapper">
 
-        <button type = "submit" onclick="saveDashboard(); closeCalendar()"> submit</button>
         <button type = "submit" class = "close" onclick="closeCalendar()"></button>
+
+
+        <div class = "calNavbar">
+
+            <div>
+                <button type = "submit" class = "" onclick="setToday()">Today</button>
+            </div>
+
+            <div>
+                <button type = "submit" onclick="savePlanningFront()"> submit</button>
+            </div>
+
+            <div>
+                <button type = "submit" onclick="loadPlanningFront()"> load Dashboard</button>
+            </div>
+
+            <div>
+                <button type = "submit" onclick="deletePlanningFront()"> Delete</button>
+            </div>
+
+
+            <div>
+                <p>blue is days where plannings are saved</p>
+            </div>    
+    
+       
+
+        </div>
+      
+
 
     </div>
 
