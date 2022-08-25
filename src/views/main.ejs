@@ -39,6 +39,10 @@
                 </tr>
             </table>
 
+            <p id = "currentDashboard">
+
+            </p>
+
         </div>
 
         <div class = "navbar">
@@ -56,8 +60,8 @@
                 <a  class = "navButton" >Open Calendar</a>
             </div>
 
-            <div  class = "inlineNav">
-                <a href=" = ggg" class = "navButton" >Export Planning </a>
+            <div class = "inlineNav">
+                <a type = "submit" onclick="clearDashboard()"> Clear Dashboard</a>
             </div>
 
             <div  class = "inlineNav" onclick = "location.href = ('/auth')" >
@@ -68,9 +72,12 @@
                 <a class = "navButton">Log out </a>
             </div>
 
-            <div class=" inlineNav" >
+            <div class="inlineNav" >
                 <a href=" = ggg" class = "navButton" >About </a>
             </div>
+
+            
+
 
             <a><input id = "catInputField" maxlength = "42" type="text" class="category navbarButton" placeholder="Add Category" onkeyup="createCategory(event)"></a>
         </div>
@@ -110,27 +117,22 @@
         <div class = "calNavbar">
 
             <div>
-                <button type = "submit" class = "" onclick="setToday()">Today</button>
+                <button type = "submit" class = "blue" onclick="setToday()">Today</button>
             </div>
 
             <div>
-                <button type = "submit" onclick="savePlanningFront()"> submit</button>
+                <button type = "submit" class = "green" onclick="savePlanningFront()">Submit</button>
             </div>
 
             <div>
-                <button type = "submit" onclick="loadPlanningFront()"> load Dashboard</button>
+                <button type = "submit" class ="yellow" onclick="loadPlanningFront()">Load</button>
             </div>
 
             <div>
-                <button type = "submit" onclick="deletePlanningFront()"> Delete</button>
+                <button type = "submit" class = "red" onclick="deletePlanningFront()"> Delete</button>
             </div>
 
-
-            <div>
-                <p>blue is days where plannings are saved</p>
-            </div>    
-    
-       
+               
 
         </div>
       

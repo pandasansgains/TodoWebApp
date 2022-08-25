@@ -261,7 +261,7 @@ function processInput(event){
             
             
             input.value = "";// reset to placeholder 
-            initDraggables();
+            initDraggable();
         }
     } 
 }
@@ -274,8 +274,12 @@ function loadPlanningFront(){
 
     if(myCalender.value!== null){
 
-        let dateString =dateConverterObj(myCalender.value);
+
+
+        let dateString = dateConverterObj(myCalender.value);
         getPlanning(dateString);// call to backend
+
+        // let currentDashb
 
     }
 
@@ -343,6 +347,19 @@ function setNote(){
     let textAreaValue = document.getElementById("popupNote").value;
 
     currentTask.setAttribute('data-note', textAreaValue);
+
+}
+
+
+function clearDashboard(){
+    document.getElementById("TaskListWrapper").innerHTML ="";
+}
+
+function setCurrentlyLoaded(date){
+    // get element and set it's value to date
+
+    document.getElementById("currentDashboard").innerHTML = date;
+
 
 }
 

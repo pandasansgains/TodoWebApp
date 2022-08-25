@@ -1,5 +1,5 @@
 
-
+var currentLoadedDashboard = null;
 var availablePlannings = null;// available plannings if logged in 
 
 // generates a JSON object based on a dashboard
@@ -109,6 +109,10 @@ function getPlanning(date){
             let jsonData = JSON.parse(xmlRequest.responseText);
 
             // when received loadDahsboard
+
+
+            // setCurrentDashboard
+            setCurrentlyLoaded(date);
             loadDashboard(jsonData);
 
            
@@ -189,8 +193,7 @@ function loadDashboard(dashboardData){
 
     // clear dashboard first
 
-    document.getElementById("TaskListWrapper").innerHTML ="";
-
+    clearDashboard();
     // set current dashboard to date
 
     let data = dashboardData;

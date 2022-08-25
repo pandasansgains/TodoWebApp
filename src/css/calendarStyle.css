@@ -1,6 +1,6 @@
 
   #myCalendarWrapper{
-    background-color: white;
+    background-color: #5c8ca0;
     width: 50%;
     display: none;
     position: absolute;
@@ -24,9 +24,44 @@
   .calNavbar{
     position: fixed;
     bottom: 0;
+    margin-left: 20px;
   }
 
   .calNavbar div{
+    display: inline-block;
+    padding: 20px 20px;
+    
+  }
+
+  .calNavbar div button{
+    border: none;
+    width: 80px;
+    height: 50px;
+
+  }
+
+  .calNavbar div button:active{
+
+    transform: scale(0.98);
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+
+  }
+
+  .red{
+    background-color: rgb(164, 58, 58);
+  }
+  .yellow{
+    background-color: rgb(223, 223, 143);
+  }
+  .blue{
+    background-color: rgb(114, 114, 221);
+  }
+  .green{
+    background-color: rgb(111, 185, 111);
+  }
+
+
+  .calNavbar p{
     display: inline-block;
   }
   
