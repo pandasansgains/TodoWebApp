@@ -53,12 +53,16 @@ app.listen(
 //base url
 app.get('/',function(req,res) { // to open the main file 
 
-    if(req.session.loggedin){
-        res.render('main',{status : "logged in as :" + req.session.username});
-    }
-    else{
-        res.render('main', {status : ''});
-    }
+  
+    res.render('register');
+    
+
+    // if(req.session.loggedin){
+    //     res.render('main',{status : "logged in as :" + req.session.username});
+    // }
+    // else{
+    //     res.render('main', {status : ''});
+    // }
     
 });
 
