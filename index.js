@@ -7,7 +7,10 @@ const config = require('config');// reference to config file
 const http = require('http');
 const bodyParser = require('body-parser'); // so we can read encoded forms ( necessary for form)
 const session = require('express-session');// so we can have session cookies for auth
+const validator = require('email-validator');// so we can validate emails 
+const bcrypt = require('bcrypt');
 const { response } = require('express');
+const { has } = require('config');
 
 
 
@@ -54,15 +57,15 @@ app.listen(
 app.get('/',function(req,res) { // to open the main file 
 
   
-    res.render('register');
+    // res.render('register');
     
 
-    // if(req.session.loggedin){
-    //     res.render('main',{status : "logged in as :" + req.session.username});
-    // }
-    // else{
-    //     res.render('main', {status : ''});
-    // }
+    if(req.session.loggedin){
+        res.render('main',{status : "logged in as :" + req.session.username});
+    }
+    else{
+        res.render('main', {status : ''});
+    }
     
 });
 
@@ -72,7 +75,14 @@ app.get('/auth',function(req,res) { // to open the main file
     res.render("login", {connectionStatus: ''});
 });
 
-//TODO separate
+
+// login page called when clicked . how to call it from html ? should i make a request or 
+// can i leave it as href
+app.get('/register',function(req,res) { // to open the main file 
+    res.render("register");
+});
+
+
 app.post('/auth', urlEncodedParser , (req,res) =>{
 
     var username = req.body.username;
@@ -101,6 +111,62 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
 
         res.render('login', {connectionStatus: "Please enter Username and Password"});
         res.end;
+    }
+})
+
+
+app.post('/register', urlEncodedParser , (req,res) =>{
+
+    var email = req.body.email;
+    var password = req.body.password;
+    var confirm = req.body.confirm;
+
+    console.log(req.body);
+
+    console.log(email, password, confirm);
+
+    if(email && password && confirm){ // checking for empty fields
+
+        var validatedEmail = validator.validate(email);// boolean for validation of email
+
+        console.log(validatedEmail + " VALID EMAIL");
+
+        bcrypt.hash(password, 10)
+            .then(hash => {
+
+            // Store hash in the database
+            bcrypt.compare(password,hash)
+                .then(result =>{
+                    console.log(result , " matching");
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+    
+
+        if(password === confirm && (validatedEmail)){// valid email and password and confirm match
+
+         
+
+            // hash and store if does not exists for one email already
+        }
+        
+        else{
+            res.send("Invalid email or passwords not matching");// redirect and alert this text
+        }
+    } 
+    else{// TODO if wrong we need to display the thing
+
+        // render that there is an error in fields
+        res.send("Fill all releveant fields");// redirect and alert this text
+        
     }
 })
 
@@ -405,6 +471,42 @@ function getTasks(categoryID){
         resolve(sqlResponse);
      
     })})
+}
+
+
+function encrypt(plaintextPassword){
+
+    bcrypt.genSalt(9, (err, salt) => {// value between 5 and 15 rounds od iteration ot generate the salt
+        bcrypt.hash(plaintextPassword, salt, function(err, hash) {
+
+            if (err) throw err;
+
+            console.log(hash);
+
+            return hash;
+
+        });
+        if (err) throw err;
+    })
+}
+
+// returns true if plaintext matches hash
+function decrypt(plaintextPassword, hash){
+
+    console.log(plaintextPassword, hash);
+
+    bcrypt.compare(plaintextPassword, hash, function(err, result) {
+
+        if (err) throw err;
+
+        if (result) {
+           // password is valid
+
+           console.log("TRUUUUE");
+           return true;
+       }
+    });
+
 }
 
 

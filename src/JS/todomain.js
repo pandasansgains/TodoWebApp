@@ -27,47 +27,47 @@ var categories = [];
 var currentTask = null; // current task being edited ( description or other ) from the popup menu
 
 
-function initContainer(container){
+function initContainer(container) {
 
-    container.addEventListener('dragover', e =>{
+    container.addEventListener('dragover', e => {
         const afterElement = getDragAfterElement(container, e.clientY); // passing container and mouse 
-             
+
         const draggable = document.querySelector('.dragging');
         e.preventDefault();
-      
-             
-        if(afterElement == null){
-            
+
+
+        if (afterElement == null) {
+
             container.appendChild(draggable); // appends at end of container, used to pass elements of list between containers
-            
+
         }
-        else{
-        
-            container.insertBefore(draggable,afterElement);
+        else {
+
+            container.insertBefore(draggable, afterElement);
         }
     })
 
 }
 
-function initDraggable(element){
+function initDraggable(element) {
 
-    
+
     element.addEventListener('dragstart', () => { // triggered when we start to drag a list tag
-        
+
         element.classList.add('dragging')
-    
+
     })
-    
+
     element.addEventListener('dragend', () => { // triggered when we stop dragging
-        
+
         element.classList.remove('dragging')
-        
+
     })
 
 }
 
 //returns the container that it created
-function createContainer(categoryName){
+function createContainer(categoryName) {
 
     //create a taskPlaceHolder
 
@@ -91,37 +91,37 @@ function createContainer(categoryName){
 
 
 
-    closeButton.onclick = function(){
+    closeButton.onclick = function () {
         deleteCategory(this);
     }
 
     span.appendChild(closeButton);
     ul.appendChild(span);
-   
-    
+
+
 
     var input = document.createElement("INPUT");
-    input.setAttribute("type","text");
+    input.setAttribute("type", "text");
 
     //input.setAttribute('maxlength',42);
 
 
     input.classList.add("taskInputField");
-    input.setAttribute("placeholder","Enter Task");
+    input.setAttribute("placeholder", "Enter Task");
 
     // call createTask with note = null 
-    input.onkeyup = function(event){
+    input.onkeyup = function (event) {
         let text = this.value;
 
-        if(event.key == "Enter"){
-        
-            if( text != ""){
+        if (event.key == "Enter") {
+
+            if (text != "") {
 
                 createTask(this.nextElementSibling, text, "");
                 // this.nextElementSibling is the container ( we are in the input field so UL is sibling)
             }
             input.value = "";// reset to placeholder 
-        } 
+        }
     }
 
 
@@ -136,21 +136,21 @@ function createContainer(categoryName){
 }
 
 // create the function this way and also calll it in createContainer
-function createTask(container, taskName, note){
+function createTask(container, taskName, note) {
 
     var listElem = document.createElement('li');
     listElem.classList.add('draggable');
     listElem.classList.add('task');
-    listElem.setAttribute('draggable',true);
+    listElem.setAttribute('draggable', true);
     initDraggable(listElem); // set the dragging classnames when dragged
-    listElem.ondblclick = function(){
+    listElem.ondblclick = function () {
         showForm(listElem);
     }
 
 
     var closeButton = document.createElement('button');// adding closeButton
     closeButton.classList.add('close');
-    closeButton.onclick = function(){
+    closeButton.onclick = function () {
         deleteElem(this);
     }
 
@@ -159,15 +159,15 @@ function createTask(container, taskName, note){
     var span = document.createElement('span');
     span.classList.add('font');
     span.innerHTML = taskName;
- 
+
 
     listElem.appendChild(span);
     listElem.appendChild(closeButton);
 
-    if(note === null){
+    if (note === null) {
         listElem.setAttribute("data-note", "");
     }
-    else{
+    else {
         listElem.setAttribute("data-note", note);
 
     }
@@ -179,100 +179,100 @@ function createTask(container, taskName, note){
 
 }
 //called in the input field at the top
-function createCategory(event){
+function createCategory(event) {
 
     let input = document.getElementById("catInputField");
     let text = input.value;
 
     event.preventDefault;
 
-        if(event.key == "Enter"){
-        
-            if( text != ""){
-                
-                createContainer(text);
-                input.value = "";
-            }
-        } 
+    if (event.key == "Enter") {
+
+        if (text != "") {
+
+            createContainer(text);
+            input.value = "";
+        }
+    }
 }
 
-function getDragAfterElement(container, y){
-    
-    
-    
-   const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]// select all draggable that we are not currently dragging
-   
-   
-   return draggableElements.reduce((closest, child)=> {// takes a function and a second parameter 
-       
-       const box = child.getBoundingClientRect();
-       
-       const offset = y - box.top - box.height / 2;
-       
-       if(offset < 0 && offset > closest.offset){
-           
-          // console.log({offset : offset, element: child})
-           
-           return {offset : offset, element: child}
-       }
-       else{
-           //console.log(closest)
-           return closest;
-       }
-       
-       
-   }, { offset: Number.NEGATIVE_INFINITY}).element;// giving big offset
-    
-    
+function getDragAfterElement(container, y) {
+
+
+
+    const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]// select all draggable that we are not currently dragging
+
+
+    return draggableElements.reduce((closest, child) => {// takes a function and a second parameter 
+
+        const box = child.getBoundingClientRect();
+
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+
+            // console.log({offset : offset, element: child})
+
+            return { offset: offset, element: child }
+        }
+        else {
+            //console.log(closest)
+            return closest;
+        }
+
+
+    }, { offset: Number.NEGATIVE_INFINITY }).element;// giving big offset
+
+
 }
-    
+
 // deletes this.parent 
-function deleteElem(elem){
-    
+function deleteElem(elem) {
+
     var element = elem;
     element.parentNode.parentNode.removeChild(element.parentNode);
 
 }
 
-function deleteCategory(elem){
+function deleteCategory(elem) {
 
     var element = elem;
     element.parentNode.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode.parentNode);
 
 }
 
-function processInput(event){
-    
+function processInput(event) {
+
     let input = document.getElementById("contentHolder");
     let text = input.value;
-    
-    if(event.key == "Enter"){
-        
-        if( text != ""){
-            
+
+    if (event.key == "Enter") {
+
+        if (text != "") {
+
             var listElem = document.createElement('li');
             listElem.classList.add('draggable');
-            listElem.setAttribute('draggable',true);
-            
-            listElem.innerHTML ="<span class = 'content'>" +text + "</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
-            
+            listElem.setAttribute('draggable', true);
+
+            listElem.innerHTML = "<span class = 'content'>" + text + "</span>  <button class='delete' onclick='deleteElem(this)'>Delete</button>";
+
             document.getElementById("taskPlaceHolder").appendChild(listElem);
-            
-            
-            
+
+
+
             input.value = "";// reset to placeholder 
             initDraggable();
         }
-    } 
+    }
 }
 
 // function called in onclick of links with date calls loadDashboard
-function loadPlanningFront(){
+function loadPlanningFront() {
 
 
     console.log(myCalender.value);
 
-    if(myCalender.value!== null){
+    if (myCalender.value !== null) {
 
 
 
@@ -287,13 +287,13 @@ function loadPlanningFront(){
 
 
 // function called in onclick of links with date calls deleteDashboard
-function deletePlanningFront(){
+function deletePlanningFront() {
 
     console.log(myCalender.value);
 
-    if(myCalender.value!== null){
+    if (myCalender.value !== null) {
 
-        let dateString =dateConverterObj(myCalender.value);
+        let dateString = dateConverterObj(myCalender.value);
         deletePlanning(dateString);// call to backend to delete
         // update available plannings
         getPlannings(true);// update available plannings
@@ -304,11 +304,11 @@ function deletePlanningFront(){
 
 
 // function called in onclick of links with date calls deleteDashboard
-function savePlanningFront(){
+function savePlanningFront() {
 
     console.log(myCalender.value);
 
-    if(myCalender.value!== null){
+    if (myCalender.value !== null) {
 
         let dateString = dateConverterObj(myCalender.value);
         saveDashboard(dateString);
@@ -322,27 +322,27 @@ function savePlanningFront(){
 
 
 
-function displayClock(){
-    var refresh=1000; // Refresh rate in milli seconds
-    var mytime=setTimeout('displayClockTime()',refresh)
+function displayClock() {
+    var refresh = 1000; // Refresh rate in milli seconds
+    var mytime = setTimeout('displayClockTime()', refresh)
 }
 
-function displayClockTime(){
-    
-    
+function displayClockTime() {
+
+
     var x = new Date()
 
-    document.getElementById('Date').innerHTML =  x.getDate() + "/" +  (x.getMonth()+1) + "/" + x.getFullYear();
-    document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() +"m ";
+    document.getElementById('Date').innerHTML = x.getDate() + "/" + (x.getMonth() + 1) + "/" + x.getFullYear();
+    document.getElementById('Time').innerHTML = x.getHours() + "h " + x.getMinutes() + "m ";
     displayClock();
-    
+
 }
 
-function colorElem(elem, color){
+function colorElem(elem, color) {
     elem.style.backgroundColor = color;
 }
 
-function setNote(){
+function setNote() {
 
     let textAreaValue = document.getElementById("popupNote").value;
 
@@ -351,11 +351,11 @@ function setNote(){
 }
 
 
-function clearDashboard(){
-    document.getElementById("TaskListWrapper").innerHTML ="";
+function clearDashboard() {
+    document.getElementById("TaskListWrapper").innerHTML = "";
 }
 
-function setCurrentlyLoaded(date){
+function setCurrentlyLoaded(date) {
     // get element and set it's value to date
 
     document.getElementById("currentDashboard").innerHTML = date;
