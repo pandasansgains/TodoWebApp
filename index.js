@@ -89,22 +89,45 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
     var password = req.body.password;
 
     if(username && password){ // checking for empty fields
-        connection.query("SELECT * from todoapp.credentials p WHERE p.Username ="+ connection.escape(username) +"AND p.Password=" + connection.escape(password) , function(err,sqlResponse){// response from DB
+
+
+        
+
+
+
+        connection.query("SELECT * from todoapp.credentials p WHERE p.Username ="+ connection.escape(username) , function(err,sqlResponse){// response from DB
     
+
             if(err) throw err;
 
             if(sqlResponse.length > 0){ // at leats one matching password
 
-                req.session.loggedin = true;
-				req.session.username = username;
-
-                res.redirect('/');
                 
+                console.log(sqlResponse);
+
+                let hash = sqlResponse[0].Password;
+
+                console.log(hash);
+
+                // get password from DB and compare with hashed 
+
+                bcrypt.compare(password, hash)
+                .then(result =>{
+                    
+                    //TODO fix security
+                    req.session.loggedin = true;
+                    req.session.username = username;
+
+                    res.redirect('/');
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             }
             else{// no account matching 
                 res.render('login', {connectionStatus: "Password or Login incorrect. Please enter Username and Password"});
             }
-            res.end();
+
         })
     } 
     else{// TODO if wrong we need to display the thing
@@ -129,31 +152,44 @@ app.post('/register', urlEncodedParser , (req,res) =>{
 
         var validatedEmail = validator.validate(email);// boolean for validation of email
 
-        console.log(validatedEmail + " VALID EMAIL");
-
-        bcrypt.hash(password, 10)
-            .then(hash => {
-
-            // Store hash in the database
-            bcrypt.compare(password,hash)
-                .then(result =>{
-                    console.log(result , " matching");
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-
-            })
-            .catch(err => {
-                console.log(err)
-            })
-
-
-    
-
         if(password === confirm && (validatedEmail)){// valid email and password and confirm match
 
-         
+
+            connection.query("SELECT * from todoapp.credentials p WHERE p.Username ="+ connection.escape(email), function(err,sqlResponse){// response from DB
+    
+                if(err) throw err;
+    
+                if(sqlResponse.length > 0){ // at least one matching account
+
+
+                    res.end;// render page with "already existing account"
+    
+                    
+                }
+                else{// no account matching 
+
+                    bcrypt.hash(password, 10)// 10 cycles of salt
+                    .then(hash => {
+
+                        connection.query( "INSERT INTO todoapp.credentials (Username,Password) VALUES (?,?)",[email,hash], function(err,sqlResponse){
+
+
+                            res.render('login', {connectionStatus: "Enter Email and Password"});
+
+
+                        })
+                        // insert hash in the database with email
+        
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+    
+                }
+            })
+            // check if not an already existing account is there 
+
+           
 
             // hash and store if does not exists for one email already
         }
@@ -169,6 +205,18 @@ app.post('/register', urlEncodedParser , (req,res) =>{
         
     }
 })
+
+
+function compareHash(){
+    
+    bcrypt.compare(password,hash)
+    .then(result =>{
+        console.log(result , " matching");
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
 
 app.post('/logout',function(req,res){
 
@@ -435,17 +483,6 @@ function deleteDashboard(date, username){
      
     })
 
-    // connection.query("INSERT INTO todoapp.task (description,title,categoryID) VALUES (?,?,?) ",[description,title,categoryID], function(err,sqlResponse){// response from DB
-    //     if (err) {
-
-    //         console.log("Error inserting task");
-        
-    //         console.log(err);
-    //         return null;
-    //     };
-    //     // if no error successfully inserted
-    //     // if error (either wrong datatype or user does not exist)
-    // })
 }
 
 // RETURNS ALL CATEGORIES ASSOCIATED TO 1 DASHBOARD
@@ -471,42 +508,6 @@ function getTasks(categoryID){
         resolve(sqlResponse);
      
     })})
-}
-
-
-function encrypt(plaintextPassword){
-
-    bcrypt.genSalt(9, (err, salt) => {// value between 5 and 15 rounds od iteration ot generate the salt
-        bcrypt.hash(plaintextPassword, salt, function(err, hash) {
-
-            if (err) throw err;
-
-            console.log(hash);
-
-            return hash;
-
-        });
-        if (err) throw err;
-    })
-}
-
-// returns true if plaintext matches hash
-function decrypt(plaintextPassword, hash){
-
-    console.log(plaintextPassword, hash);
-
-    bcrypt.compare(plaintextPassword, hash, function(err, result) {
-
-        if (err) throw err;
-
-        if (result) {
-           // password is valid
-
-           console.log("TRUUUUE");
-           return true;
-       }
-    });
-
 }
 
 
