@@ -42,8 +42,11 @@ app.set('view engine', 'ejs');
 // TODO add password to config for now leave it as secret for test
 app.use(session({
 	secret:  `${config.SESSIONPASSWORD}`,
-	resave: true,
-	saveUninitialized: true
+	resave: false,
+	saveUninitialized: true,
+    cookie : {maxAge: 1000*60*24*24},// one day
+    loggedin : false,
+    username : ""
 }));
 
 app.listen(
@@ -58,10 +61,11 @@ app.get('/',function(req,res) { // to open the main file
 
   
     // res.render('register');
-    
 
-    if(req.session.loggedin){
-        res.render('main',{status : "logged in as :" + req.session.username});
+    var session = req.session;
+    
+    if(session.loggedin){
+        res.render('main',{status : "logged in as :" + session.username});
     }
     else{
         res.render('main', {status : ''});
@@ -88,11 +92,9 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
     var username = req.body.username;
     var password = req.body.password;
 
+    var session = req.session;
+
     if(username && password){ // checking for empty fields
-
-
-        
-
 
 
         connection.query("SELECT * from todoapp.credentials p WHERE p.Username ="+ connection.escape(username) , function(err,sqlResponse){// response from DB
@@ -100,7 +102,7 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
 
             if(err) throw err;
 
-            if(sqlResponse.length > 0){ // at leats one matching password
+            if(sqlResponse.length > 0){ // at least one matching password
 
                 
                 console.log(sqlResponse);
@@ -115,8 +117,8 @@ app.post('/auth', urlEncodedParser , (req,res) =>{
                 .then(result =>{
                     
                     //TODO fix security
-                    req.session.loggedin = true;
-                    req.session.username = username;
+                    session.loggedin = true;
+                    session.username = username;
 
                     res.redirect('/');
                 })
@@ -222,13 +224,21 @@ app.post('/logout',function(req,res){
 
     console.log("reached");
 
-    if(req.session.loggedin){
+    var session = req.session;
 
-        console.log("true");
+    if(session.loggedin){
 
-        req.session.loggedin = false;
-        req.session.username = null;
-        //TODO make logout work
+      
+
+        console.log(session);
+
+
+        session.loggedin = false;
+        session.username = "";
+        
+        session.destroy();
+
+        console.log(session);
         res.render('main', {status : ""});
         res.end;
 
