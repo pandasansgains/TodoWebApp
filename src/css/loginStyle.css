@@ -7,6 +7,7 @@ body
 
 .center
 {
+ display: block;
  position:absolute;
  top:50%;
  left:50%;
@@ -17,58 +18,64 @@ body
 {
  width: 330px;
  height: auto;
- background: #d0085f;
+ background: #F3eaaf;
  padding: 30px 35px 40px;
  box-sizing: border-box;
- border-radius: 5px;
+ border-radius: 7px;
+}   
+
+.title{
+    
+    font-size: 30px;
+    color: #000000;
+    margin-left: 25%;
+    letter-spacing: 2px;
+    text-align: center;
+    width: 100%;
+    font-weight: 100;
+
 }
 
-.text
-{
- font-size: 30px;
- color: #000000;
- font-weight: 600;
- text-align: center;
- letter-spacing: 2px;
+.content form{
+
+    margin-top: 30px;
 }
 
-#loginForm
-{
- margin-top: 40px;
+.content div{
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: none;
+    padding: 10px 5px 5px 10px;
 }
 
-label
-{
- display: block;
- margin-top: 30px;
- font-size: 16px;
- font-weight: 500;
-}
+.content div input{
 
-input
-{
- display: block;
- height: 43px;
- width: 100%;
- background-color: rgba(255,255,255);
- border-radius: 3px;
- border: none;
+    margin-top: 10px;
+    display: block;
+    height: 30px;
+    width: 100%;
+    border-radius: 2px;
+    border: none;
 
- margin-top: 8px;
-
- font-size: 14px;
- font-weight: 300;
 }
 
 
-button
-{
- width: 100%;
- margin-top: 35px;
- padding: 12px;
- background: #dde1e7;
- border: none;
- font-size: 17px;
- font-weight: 600;
- margin-bottom: 32px;
+.content div button{
+
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    font-size: medium;
+    font-weight: 100;
+
 }
+
+
+
+
+
+
+
